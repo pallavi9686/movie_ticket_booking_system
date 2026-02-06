@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import MovieCard from '../components/MovieCard'
 import SearchBar from '../components/SearchBar'
+import { Link } from 'react-router-dom'
 
 export default function Home(){
   const [movies, setMovies] = useState([])
@@ -25,8 +26,27 @@ export default function Home(){
 
   return (
     <div className="container">
+      <div className="hero">
+        <div>
+          <h1 className="title">Find your next movie night</h1>
+          <p className="subtitle">Browse showtimes, pick seats and book instantly — great films, great seats.</p>
+          <div className="cta">
+            {movies && movies[0] ? (
+              <Link to={`/movie/${movies[0].id}`}>
+                <button className="button">Browse Featured</button>
+              </Link>
+            ) : (
+              <button className="button">Browse Movies</button>
+            )}
+            <span className="badge">Free cancellations</span>
+          </div>
+        </div>
+        <div style={{minWidth:280}}>
+          <SearchBar filters={filters} setFilters={setFilters} />
+        </div>
+      </div>
+
       <h2>Now showing</h2>
-      <SearchBar filters={filters} setFilters={setFilters} />
       <div className="grid movies-grid">
         {filtered.map(m => <MovieCard key={m.id} movie={m} />)}
       </div>
