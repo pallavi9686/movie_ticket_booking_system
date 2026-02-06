@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { useBooking } from '../context/BookingContext'
 
-export default function SeatGrid({ rows=5, cols=8, bookedSeats=[], selected=[], onToggle }){
+export default function SeatGrid({ rows=5, cols=8, bookedSeats=[], selected=[], onToggle, disabled=false }){
   const { isSeatBooked } = useBooking()
 
   const seats = useMemo(()=>{
@@ -18,21 +18,34 @@ export default function SeatGrid({ rows=5, cols=8, bookedSeats=[], selected=[], 
   },[rows,cols])
 
   return (
-    <div>
-      {seats.map((row,ri)=> (
-        <div key={ri} style={{display:'flex'}}>
-          {row.map(seatId=>{
-            const booked = bookedSeats.includes(seatId)
-            const sel = selected.includes(seatId)
-            const cls = booked ? 'seat booked' : sel ? 'seat selected' : 'seat available'
-            return (
-              <div key={seatId} className={cls} onClick={()=>{ if(!booked) onToggle(seatId) }}>
-                {seatId}
-              </div>
-            )
-          })}
-        </div>
-      ))}
+    <div className="seat-map">
+      <div className="seat-note">Click seats to select — use keyboard (Tab + Enter) for accessibility</div>
+      <div className="seat-grid">
+        {seats.map((row,ri)=> (
+          <div key={ri} className="seat-row">
+            <div className="row-label">{String.fromCharCode(65+ri)}</div>
+            {row.map(seatId=>{
+              const booked = bookedSeats.includes(seatId)
+              const sel = selected.includes(seatId)
+              const base = booked ? 'seat booked' : sel ? 'seat selected' : 'seat available'
+              const cls = `${base}${disabled ? ' disabled' : ''}`
+              return (
+                <button
+                  key={seatId}
+                  className={cls}
+                  onClick={()=>{ if(!booked && !disabled) onToggle(seatId) }}
+                  disabled={booked || disabled}
+                  aria-pressed={sel}
+                  aria-disabled={booked || disabled}
+                  title={`${seatId} — ${booked ? 'Booked' : sel ? 'Selected' : 'Available'} • $8`}
+                >
+                  {seatId}
+                </button>
+              )
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

@@ -13,6 +13,7 @@ export default function SeatSelection(){
   const [showtime, setShowtime] = useState(location.state?.showtime || '')
   const [selected, setSelected] = useState([])
   const [bookedSeats, setBookedSeats] = useState([])
+  const PRICE = 8
 
   useEffect(()=>{
     if(!movie){
@@ -61,14 +62,23 @@ export default function SeatSelection(){
 
       <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
         <div style={{flex:1}}>
-          <SeatGrid rows={6} cols={8} bookedSeats={bookedSeats} selected={selected} onToggle={toggle} />
+          <div className="seat-map-wrapper">
+            <div className="legend">
+              <div className="item"><span className="swatch available"/> Available</div>
+              <div className="item"><span className="swatch selected"/> Selected</div>
+              <div className="item"><span className="swatch booked"/> Booked</div>
+            </div>
+            {!showtime && <div className="seat-note">Choose a showtime to enable seat selection and see booked seats.</div>}
+            <SeatGrid rows={6} cols={8} bookedSeats={bookedSeats} selected={selected} onToggle={toggle} disabled={!showtime} />
+          </div>
         </div>
         <div style={{width:320}}>
           <div className="summary">
             <h4>Selected seats</h4>
             <p>{selected.join(', ') || 'No seats selected'}</p>
-            <p><strong>Total:</strong> ${selected.length * 8}</p>
-            <button className="button" onClick={toSummary}>Proceed</button>
+            <p><strong>Total:</strong> ${selected.length * PRICE}</p>
+            <p className="footer-note">Price per seat: ${PRICE}</p>
+            <button className="button" onClick={toSummary} disabled={selected.length===0}>Proceed</button>
           </div>
         </div>
       </div>
