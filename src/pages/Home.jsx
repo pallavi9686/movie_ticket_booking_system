@@ -36,7 +36,7 @@ export default function Home(){
     <div className="container">
       <div className="hero">
         <div>
-          <h1 className="title">Find your next movie night</h1>
+          <h1 className="title">Find your next movie nights</h1>
           <p className="subtitle">Browse showtimes, pick seats and book instantly — great films, great seats.</p>
           <div className="cta">
             {movies && movies[0] ? (
