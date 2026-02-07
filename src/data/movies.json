@@ -21,7 +21,7 @@
     "description": "A heart-warming story of love and second chances.",
     "cast": ["Actor X", "Actor Y"],
     "trailer": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "showtimes": ["2026-02-06T13:00", "2026-02-07T18:00"]
+    "showtimes": ["2026-02-06T13:00", "2026-02-06T20:30", "2026-02-07T18:00"]
   },
   {
     "id": "3",
@@ -33,6 +33,6 @@
     "description": "Secrets unravel in a secluded manor.",
     "cast": ["Actor L", "Actor M", "Actor N"],
     "trailer": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "showtimes": ["2026-02-06T19:00", "2026-02-07T21:00"]
+    "showtimes": ["2026-02-06T19:00", "2026-02-06T16:30", "2026-02-07T21:00"]
   }
 ]

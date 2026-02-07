@@ -20,8 +20,8 @@ export default function MovieCard({ movie }) {
         <div className="chip">{movie.genre}</div>
 
         <div className="overlay">
-          <div style={{color:'#fff'}}>
-            <div style={{fontWeight:700,fontSize:16}}>{movie.title}</div>
+          <div className="overlay-content">
+            <div className="overlay-title">{movie.title}</div>
             <div className="small-note">{movie.duration} • {nextShow ? formatTime(nextShow) : ''}</div>
             <div className="desc">{movie.description}</div>
             <div className="card-actions">

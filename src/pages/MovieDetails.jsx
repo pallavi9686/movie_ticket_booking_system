@@ -16,8 +16,8 @@ export default function MovieDetails(){
 
   return (
     <div className="container">
-      <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
-        <img src={movie.poster} style={{width:240,borderRadius:8}} alt="poster" />
+      <div className="details-grid">
+        <img src={movie.poster} className="poster" alt="poster" />
         <div>
           <h2>{movie.title}</h2>
           <p>{movie.genre} • {movie.duration} • ⭐ {movie.rating}</p>

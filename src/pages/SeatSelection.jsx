@@ -60,8 +60,8 @@ export default function SeatSelection(){
         </select>
       </div>
 
-      <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-        <div style={{flex:1}}>
+      <div className="two-column">
+        <div>
           <div className="seat-map-wrapper">
             <div className="legend">
               <div className="item"><span className="swatch available"/> Available</div>
@@ -72,7 +72,7 @@ export default function SeatSelection(){
             <SeatGrid rows={6} cols={8} bookedSeats={bookedSeats} selected={selected} onToggle={toggle} disabled={!showtime} />
           </div>
         </div>
-        <div style={{width:320}}>
+        <div className="sidebar">
           <div className="summary">
             <h4>Selected seats</h4>
             <p>{selected.join(', ') || 'No seats selected'}</p>
