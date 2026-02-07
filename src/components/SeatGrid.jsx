@@ -37,7 +37,7 @@ export default function SeatGrid({ rows=5, cols=8, bookedSeats=[], selected=[], 
                   disabled={booked || disabled}
                   aria-pressed={sel}
                   aria-disabled={booked || disabled}
-                  title={`${seatId} — ${booked ? 'Booked' : sel ? 'Selected' : 'Available'} • $8`}
+                  title={`${seatId} — ${booked ? 'Booked' : sel ? 'Selected' : 'Available'} • ₹8`}
                 >
                   {seatId}
                 </button>

@@ -7,6 +7,7 @@ export default function Checkout(){
   const navigate = useNavigate()
   const { addBooking } = useBooking()
   const booking = location.state?.booking
+  const formatINR = v => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(v)
 
   useEffect(()=>{
     if(!booking){
@@ -37,7 +38,7 @@ export default function Checkout(){
         <p><strong>Movie:</strong> {booking.movieTitle}</p>
         <p><strong>Showtime:</strong> {new Date(booking.showtime).toLocaleString()}</p>
         <p><strong>Seats:</strong> {booking.seats.join(', ')}</p>
-        <p><strong>Total:</strong> ${booking.total}</p>
+        <p><strong>Total:</strong> {formatINR(booking.total)}</p>
         <button className="button" onClick={confirm}>Confirm & Save</button>
       </div>
       <p className="footer-note">Saved bookings persist to LocalStorage.</p>

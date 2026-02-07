@@ -28,13 +28,14 @@ body{font-family:Poppins, Inter, system-ui, Arial, sans-serif;margin:0;backgroun
 .search-bar{display:flex;gap:10px;margin:8px 0}
 .search-bar{display:flex;gap:10px;margin:8px 0;align-items:center}
 .search-input,.genre-input,.date-input{padding:10px 12px;border-radius:10px;border:1px solid rgba(16,24,40,0.06);background:var(--glass);min-width:0}
-.search-input{flex:1}
+.search-input{flex:1;font-size:16px}
 
 /* Enhanced search bar */
 .search-bar.enhanced{background:linear-gradient(90deg, rgba(108,92,231,0.04), rgba(0,184,148,0.02));padding:8px;border-radius:12px}
 .search-input-wrap{display:flex;align-items:center;gap:8px;flex:1;padding:6px 8px;background:rgba(255,255,255,0.6);border-radius:10px;border:1px solid rgba(16,24,40,0.04)}
 .search-icon{color:var(--muted);margin-left:6px}
-.search-input-wrap .search-input{border:none;background:transparent;padding:8px 6px;margin:0}
+.search-input-wrap .search-input{border:none;background:transparent;padding:8px 6px;margin:0;font-size:16px}
+.search-input::placeholder{font-size:15px;color:var(--muted)}
 .search-input:focus{outline:none}
 .genre-input,.date-input{width:160px}
 .clear-btn{background:transparent;color:var(--muted);border:1px solid rgba(16,24,40,0.06);padding:8px 10px;border-radius:8px}
@@ -75,6 +76,10 @@ body{font-family:Poppins, Inter, system-ui, Arial, sans-serif;margin:0;backgroun
 .card-actions{display:flex;gap:8px;margin-top:10px}
 .btn-ghost{background:transparent;border:1px solid rgba(16,24,40,0.06);color:#101828;padding:8px 10px;border-radius:8px;cursor:pointer}
 .small-note{font-size:12px;color:var(--muted)}
+
+/* Blue Book Now button for featured movie */
+.btn-book-blue{background:linear-gradient(90deg,#2563eb,#1e40af);color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 8px 20px rgba(37,99,235,0.14)}
+.btn-book-blue:hover{transform:translateY(-3px);transition:transform .12s ease}
 /* seat basics (kept for backward compatibility) */
 .seat{width:34px;height:34px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;margin:4px;cursor:pointer;border:none}
 .seat.available{background:rgba(108,92,231,0.08);color:#101828}

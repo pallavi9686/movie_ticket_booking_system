@@ -14,6 +14,7 @@ export default function SeatSelection(){
   const [selected, setSelected] = useState([])
   const [bookedSeats, setBookedSeats] = useState([])
   const PRICE = 8
+  const formatINR = v => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(v)
 
   useEffect(()=>{
     if(!movie){
@@ -76,8 +77,8 @@ export default function SeatSelection(){
           <div className="summary">
             <h4>Selected seats</h4>
             <p>{selected.join(', ') || 'No seats selected'}</p>
-            <p><strong>Total:</strong> ${selected.length * PRICE}</p>
-            <p className="footer-note">Price per seat: ${PRICE}</p>
+            <p><strong>Total:</strong> {formatINR(selected.length * PRICE)}</p>
+            <p className="footer-note">Price per seat: {formatINR(PRICE)}</p>
             <button className="button" onClick={toSummary} disabled={selected.length===0}>Proceed</button>
           </div>
         </div>

@@ -29,7 +29,7 @@ export default function MovieCard({ movie }) {
                 <button className="button">Details</button>
               </Link>
               <Link to={`/movie/${movie.id}/seats`}>
-                <button className="btn-ghost">Book Now</button>
+                <button className={`btn-ghost ${['The Grand Adventure','Romance in Paris','Mystery Manor'].includes(movie.title) ? 'btn-book-blue' : ''}`}>Book Now</button>
               </Link>
             </div>
           </div>
