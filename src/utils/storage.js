@@ -19,7 +19,7 @@ export const initializeApp = () => {
         genre: 'Action, Crime, Drama',
         duration: '152 min',
         rating: '9.0',
-        price: 15,
+        price: 250,
         showTimings: ['10:00 AM', '2:00 PM', '6:00 PM', '9:30 PM'],
         description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.'
       },
@@ -30,7 +30,7 @@ export const initializeApp = () => {
         genre: 'Action, Sci-Fi, Thriller',
         duration: '148 min',
         rating: '8.8',
-        price: 18,
+        price: 300,
         showTimings: ['11:00 AM', '3:00 PM', '7:00 PM', '10:00 PM'],
         description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.'
       },
@@ -41,7 +41,7 @@ export const initializeApp = () => {
         genre: 'Adventure, Drama, Sci-Fi',
         duration: '169 min',
         rating: '8.6',
-        price: 20,
+        price: 350,
         showTimings: ['10:30 AM', '2:30 PM', '6:30 PM', '9:00 PM'],
         description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.'
       }

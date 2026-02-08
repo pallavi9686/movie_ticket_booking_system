@@ -7,6 +7,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    mobile: '',
     password: '',
     confirmPassword: ''
   });
@@ -25,9 +26,17 @@ const Register = () => {
       return;
     }
 
+    // Validate mobile number (basic validation for 10 digits)
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!mobileRegex.test(formData.mobile)) {
+      setError('Please enter a valid 10-digit mobile number');
+      return;
+    }
+
     const result = registerUser({
       name: formData.name,
       email: formData.email,
+      mobile: formData.mobile,
       password: formData.password
     });
     
@@ -64,6 +73,18 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Mobile Number</label>
+              <input
+                type="tel"
+                name="mobile"
+                value={formData.mobile}
+                onChange={handleChange}
+                placeholder="Enter your 10-digit mobile number"
+                pattern="[0-9]{10}"
                 required
               />
             </div>

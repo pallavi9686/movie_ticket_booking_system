@@ -63,7 +63,7 @@ const MyBookings = () => {
                   <p><strong>Seats:</strong> {booking.seats.join(', ')}</p>
                   <p><strong>Total Seats:</strong> {booking.totalSeats}</p>
                   {booking.totalPrice && (
-                    <p className="booking-price"><strong>Total Paid:</strong> ${(booking.finalAmount || booking.totalPrice).toFixed(2)}</p>
+                    <p className="booking-price"><strong>Total Paid:</strong> ₹{(booking.finalAmount || booking.totalPrice).toFixed(2)}</p>
                   )}
                   {booking.couponCode && (
                     <p className="coupon-badge">🎟️ Coupon: {booking.couponCode}</p>
