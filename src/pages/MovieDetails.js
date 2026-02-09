@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SeatLayout from '../components/SeatLayout';
-import { getMovieById, createBooking, getBookedSeats, getCurrentUser, calculateTotalPrice, validateCoupon, applyCouponUsage } from '../utils/storage';
+import { getMovieById, createBooking, getBookedSeats, getCurrentUser, calculateTotalPrice, validateCoupon, applyCouponUsage, getReviews, addReview, deleteReview, getAverageRating } from '../utils/storage';
 import './MovieDetails.css';
 
 const MovieDetails = () => {
@@ -18,6 +18,9 @@ const MovieDetails = () => {
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvv: '', name: '' });
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
+  const [averageRating, setAverageRating] = useState(0);
   const currentUser = getCurrentUser();
 
   // Generate next 7 days for date selection
@@ -51,7 +54,16 @@ const MovieDetails = () => {
         setSelectedShowTime(movieData.showTimings[0]);
       }
     }
+    // Load reviews
+    loadReviews();
   }, [id]);
+
+  const loadReviews = () => {
+    const movieReviews = getReviews(id);
+    setReviews(movieReviews);
+    const avgRating = getAverageRating(id);
+    setAverageRating(avgRating);
+  };
 
   useEffect(() => {
     if (movie && selectedShowTime && selectedDate) {
@@ -116,6 +128,48 @@ const MovieDetails = () => {
 
     setShowPayment(true);
   };
+
+  const handleSubmitReview = (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      setMessage({ type: 'error', text: 'Please login to submit a review' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      return;
+    }
+
+    if (!newReview.comment.trim()) {
+      setMessage({ type: 'error', text: 'Please write a comment' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      return;
+    }
+
+    const result = addReview({
+      movieId: id,
+      rating: newReview.rating,
+      comment: newReview.comment
+    });
+
+    if (result.success) {
+      setMessage({ type: 'success', text: 'Review submitted successfully!' });
+      setNewReview({ rating: 5, comment: '' });
+      loadReviews();
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    } else {
+      setMessage({ type: 'error', text: result.message });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    }
+  };
+
+  const handleDeleteReview = (reviewId) => {
+    if (window.confirm('Are you sure you want to delete this review?')) {
+      deleteReview(reviewId);
+      loadReviews();
+      setMessage({ type: 'success', text: 'Review deleted successfully' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    }
+  };
+
 
   const handlePayment = (e) => {
     e.preventDefault();
@@ -401,6 +455,104 @@ const MovieDetails = () => {
                 </form>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="reviews-section">
+          <div className="container">
+            <h2>User Reviews & Ratings</h2>
+            
+            <div className="rating-summary">
+              <div className="average-rating">
+                <div className="rating-number">{averageRating || movie.rating}</div>
+                <div className="rating-stars">
+                  {'⭐'.repeat(Math.round(averageRating || movie.rating))}
+                </div>
+                <div className="rating-count">{reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}</div>
+              </div>
+            </div>
+
+            {/* Add Review Form */}
+            {currentUser && (
+              <div className="add-review-form">
+                <h3>Write a Review</h3>
+                <form onSubmit={handleSubmitReview}>
+                  <div className="rating-input">
+                    <label>Your Rating:</label>
+                    <div className="star-rating">
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <span
+                          key={star}
+                          className={`star ${newReview.rating >= star ? 'active' : ''}`}
+                          onClick={() => setNewReview({ ...newReview, rating: star })}
+                        >
+                          ⭐
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="comment-input">
+                    <label>Your Comment:</label>
+                    <textarea
+                      value={newReview.comment}
+                      onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                      placeholder="Share your thoughts about this movie..."
+                      rows="4"
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">Submit Review</button>
+                </form>
+              </div>
+            )}
+
+            {!currentUser && (
+              <div className="login-prompt">
+                <p>Please <a href="/login">login</a> to write a review</p>
+              </div>
+            )}
+
+            {/* Reviews List */}
+            <div className="reviews-list">
+              {reviews.length === 0 ? (
+                <p className="no-reviews">No reviews yet. Be the first to review this movie!</p>
+              ) : (
+                reviews.map(review => (
+                  <div key={review.id} className="review-card">
+                    <div className="review-header">
+                      <div className="review-user">
+                        <div className="user-avatar">{review.userName.charAt(0).toUpperCase()}</div>
+                        <div className="user-info">
+                          <h4>{review.userName}</h4>
+                          <div className="review-rating">
+                            {'⭐'.repeat(review.rating)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="review-meta">
+                        <span className="review-date">
+                          {new Date(review.createdAt).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                          })}
+                        </span>
+                        {currentUser && currentUser.userId === review.userId && (
+                          <button 
+                            className="btn-delete-review"
+                            onClick={() => handleDeleteReview(review.id)}
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <p className="review-comment">{review.comment}</p>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
