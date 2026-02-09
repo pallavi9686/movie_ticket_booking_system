@@ -65,6 +65,83 @@
   text-decoration: underline;
 }
 
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+.forgot-password-link {
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #e94560;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+  color: #ff6b6b;
+}
+
+.forgot-password-form h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.reset-info {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.success-message {
+  background: rgba(92, 184, 92, 0.2);
+  border: 1px solid #5cb85c;
+  color: #5cb85c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.back-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #e94560;
+}
+
 @media (max-width: 768px) {
   .auth-card {
     padding: 30px 20px;

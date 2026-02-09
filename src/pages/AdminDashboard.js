@@ -272,7 +272,7 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Base Price (₹)</label>
+                  <label>Base Price ($)</label>
                   <input
                     type="number"
                     name="price"
@@ -344,7 +344,7 @@ const AdminDashboard = () => {
                     <p>Genre: {movie.genre}</p>
                     <p>Duration: {movie.duration}</p>
                     <p>Rating: ⭐ {movie.rating}</p>
-                    <p>Price: ₹{movie.price}/seat</p>
+                    <p>Price: ${movie.price}/seat</p>
                     <div className="admin-movie-actions">
                       <button
                         onClick={() => handleEditMovie(movie)}

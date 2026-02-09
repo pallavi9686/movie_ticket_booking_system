@@ -201,7 +201,7 @@ const MovieDetails = () => {
                 <p>Selected Seats: None</p>
               )}
               <p>Show Time: {selectedShowTime}</p>
-              <p>Base Price per Seat: ₹{movie.price}</p>
+              <p>Base Price per Seat: ${movie.price}</p>
               <p className="price-note">💡 Rows A-B: 20% off | Rows C-D: Standard | Rows E-F: 20% premium</p>
               
               {!showPayment && (
@@ -237,11 +237,11 @@ const MovieDetails = () => {
                 const { totalPrice, discount, finalAmount } = calculateFinalAmount();
                 return (
                   <>
-                    <p>Subtotal: ₹{totalPrice.toFixed(2)}</p>
+                    <p>Subtotal: ${totalPrice.toFixed(2)}</p>
                     {discount > 0 && (
-                      <p className="discount-amount">Discount: -₹{discount.toFixed(2)}</p>
+                      <p className="discount-amount">Discount: -${discount.toFixed(2)}</p>
                     )}
-                    <p className="total">Total Amount: ₹{finalAmount.toFixed(2)}</p>
+                    <p className="total">Total Amount: ${finalAmount.toFixed(2)}</p>
                   </>
                 );
               })()}

@@ -108,9 +108,9 @@ const BookingDetails = () => {
                       <tr key={seat}>
                         <td className="seat-number">{seat}</td>
                         <td>{rowType}</td>
-                        <td>₹{Number(basePrice).toFixed(2)}</td>
+                        <td>${Number(basePrice).toFixed(2)}</td>
                         <td>{multiplier}</td>
-                        <td className="seat-price">₹{seatPrice.toFixed(2)}</td>
+                        <td className="seat-price">${seatPrice.toFixed(2)}</td>
                       </tr>
                     );
                   })}
