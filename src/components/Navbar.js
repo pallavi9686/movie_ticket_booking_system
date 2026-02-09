@@ -8,6 +8,7 @@ const Navbar = () => {
   const [admin, setAdmin] = useState(null);
   const [coupons, setCoupons] = useState([]);
   const [showOffers, setShowOffers] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,12 +35,31 @@ const Navbar = () => {
     window.location.reload();
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/movies?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           🎬 CineBook
         </Link>
+        
+        <form className="navbar-search" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <button type="submit" className="search-btn">🔍</button>
+        </form>
         
         <ul className="navbar-menu">
           <li><Link to="/">Home</Link></li>
@@ -94,8 +114,6 @@ const Navbar = () => {
           {!user && !admin && (
             <>
               <li><Link to="/login">Login</Link></li>
-              <li><Link to="/register">Register</Link></li>
-              <li><Link to="/admin-login">Admin</Link></li>
             </>
           )}
           
