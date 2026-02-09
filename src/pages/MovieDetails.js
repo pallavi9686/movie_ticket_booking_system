@@ -8,6 +8,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
   const [selectedShowTime, setSelectedShowTime] = useState('');
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookedSeats, setBookedSeats] = useState([]);
@@ -19,10 +20,33 @@ const MovieDetails = () => {
   const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvv: '', name: '' });
   const currentUser = getCurrentUser();
 
+  // Generate next 7 days for date selection
+  const generateDates = () => {
+    const dates = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      dates.push(date);
+    }
+    return dates;
+  };
+
+  const formatDate = (date) => {
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  const formatDateValue = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
   useEffect(() => {
     const movieData = getMovieById(id);
     if (movieData) {
       setMovie(movieData);
+      // Set default date to today
+      const today = new Date();
+      setSelectedDate(formatDateValue(today));
       if (movieData.showTimings.length > 0) {
         setSelectedShowTime(movieData.showTimings[0]);
       }
@@ -30,12 +54,12 @@ const MovieDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    if (movie && selectedShowTime) {
-      const booked = getBookedSeats(movie.id, selectedShowTime);
+    if (movie && selectedShowTime && selectedDate) {
+      const booked = getBookedSeats(movie.id, `${selectedDate}-${selectedShowTime}`);
       setBookedSeats(booked);
       setSelectedSeats([]);
     }
-  }, [movie, selectedShowTime]);
+  }, [movie, selectedShowTime, selectedDate]);
 
   const handleSeatSelect = (seat) => {
     if (selectedSeats.includes(seat)) {
@@ -95,7 +119,7 @@ const MovieDetails = () => {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    
+
     if (paymentMethod === 'card') {
       if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvv || !cardDetails.name) {
         setMessage({ type: 'error', text: 'Please fill all card details' });
@@ -109,6 +133,7 @@ const MovieDetails = () => {
     const bookingData = {
       movieId: movie.id,
       movieTitle: movie.title,
+      showDate: selectedDate,
       showTime: selectedShowTime,
       seats: selectedSeats,
       totalSeats: selectedSeats.length,
@@ -122,7 +147,7 @@ const MovieDetails = () => {
     };
 
     const result = createBooking(bookingData);
-    
+
     if (result.success) {
       if (appliedCoupon) {
         applyCouponUsage(appliedCoupon.code);
@@ -137,6 +162,8 @@ const MovieDetails = () => {
   if (!movie) {
     return <div className="container">Loading...</div>;
   }
+
+  const availableDates = generateDates();
 
   return (
     <div className="movie-details-page">
@@ -162,12 +189,33 @@ const MovieDetails = () => {
       <div className="booking-section">
         <div className="container">
           <h2>Book Your Seats</h2>
-          
+
           {message.text && (
             <div className={`${message.type}-message`}>
               {message.text}
             </div>
           )}
+
+          <div className="show-dates">
+            <h3>Select Date</h3>
+            <div className="show-dates-grid">
+              {availableDates.map(date => {
+                const dateValue = formatDateValue(date);
+                const isToday = dateValue === formatDateValue(new Date());
+                return (
+                  <button
+                    key={dateValue}
+                    className={`show-date-btn ${selectedDate === dateValue ? 'active' : ''}`}
+                    onClick={() => setSelectedDate(dateValue)}
+                  >
+                    <div className="date-day">{formatDate(date).split(',')[0]}</div>
+                    <div className="date-full">{formatDate(date).split(',')[1]}</div>
+                    {isToday && <div className="today-badge">Today</div>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           <div className="show-times">
             <h3>Select Show Time</h3>
@@ -200,10 +248,11 @@ const MovieDetails = () => {
               ) : (
                 <p>Selected Seats: None</p>
               )}
+              <p>Show Date: {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               <p>Show Time: {selectedShowTime}</p>
               <p>Base Price per Seat: ₹{movie.price}</p>
               <p className="price-note">💡 Rows A-B: 20% off | Rows C-D: Standard | Rows E-F: 20% premium</p>
-              
+
               {!showPayment && (
                 <>
                   <div className="coupon-section">
@@ -232,7 +281,7 @@ const MovieDetails = () => {
                   )}
                 </>
               )}
-              
+
               {(() => {
                 const { totalPrice, discount, finalAmount } = calculateFinalAmount();
                 return (
@@ -246,15 +295,15 @@ const MovieDetails = () => {
                 );
               })()}
             </div>
-            
+
             {!showPayment ? (
               <button
                 className="btn btn-primary"
                 onClick={handleProceedToPayment}
                 disabled={selectedSeats.length === 0}
               >
-                {selectedSeats.length > 0 
-                  ? `Proceed to Payment - $${calculateFinalAmount().finalAmount.toFixed(2)}`
+                {selectedSeats.length > 0
+                  ? `Proceed to Payment - ₹${calculateFinalAmount().finalAmount.toFixed(2)}`
                   : 'Select Seats to Continue'
                 }
               </button>
@@ -343,7 +392,7 @@ const MovieDetails = () => {
 
                   <div className="payment-actions">
                     <button type="submit" className="btn btn-primary">
-                      Confirm Payment - ${calculateFinalAmount().finalAmount.toFixed(2)}
+                      Confirm Payment - ₹{calculateFinalAmount().finalAmount.toFixed(2)}
                     </button>
                     <button type="button" onClick={() => setShowPayment(false)} className="btn btn-secondary">
                       Back
@@ -357,6 +406,6 @@ const MovieDetails = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MovieDetails;

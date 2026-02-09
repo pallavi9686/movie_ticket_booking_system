@@ -114,6 +114,7 @@ const Navbar = () => {
           {!user && !admin && (
             <>
               <li><Link to="/login">Login</Link></li>
+              <li><Link to="/admin-login">Admin</Link></li>
             </>
           )}
           
