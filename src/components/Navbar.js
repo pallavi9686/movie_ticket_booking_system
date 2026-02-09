@@ -64,6 +64,7 @@ const Navbar = () => {
         <ul className="navbar-menu">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/movies">Movies</Link></li>
+          <li><Link to="/releases">Releases</Link></li>
           
           {user && (
             <li><Link to="/my-bookings">My Bookings</Link></li>

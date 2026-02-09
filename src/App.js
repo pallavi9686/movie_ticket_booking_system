@@ -10,6 +10,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import MyBookings from './pages/MyBookings';
 import BookingDetails from './pages/BookingDetails';
+import Releases from './pages/Releases';
 import { initializeApp } from './utils/storage';
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
+          <Route path="/releases" element={<Releases />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
