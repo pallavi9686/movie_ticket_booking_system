@@ -1,0 +1,341 @@
+.movie-details-page {
+  min-height: 100vh;
+}
+
+.movie-header {
+  position: relative;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+}
+
+.movie-header-overlay {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(15, 12, 41, 0.95));
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.movie-header-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.movie-poster-large {
+  width: 300px;
+  height: 450px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.movie-info-large h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.movie-meta-large {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.movie-meta-large span {
+  color: #ffd700;
+}
+
+.movie-description {
+  font-size: 18px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+}
+
+.booking-section {
+  padding: 60px 20px;
+}
+
+.booking-section h2 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #e94560;
+}
+
+.show-times {
+  margin-bottom: 40px;
+}
+
+.show-times h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.show-times-grid {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.show-time-btn {
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.show-time-btn:hover {
+  background: rgba(233, 69, 96, 0.3);
+  border-color: #e94560;
+}
+
+.show-time-btn.active {
+  background: #e94560;
+  border-color: #e94560;
+}
+
+.booking-summary {
+  max-width: 600px;
+  margin: 40px auto 0;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-info h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #e94560;
+}
+
+.summary-info p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.summary-info .selected-seats-list {
+  background: rgba(255, 215, 0, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ffd700;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #ffd700;
+  font-size: 18px;
+}
+
+.summary-info .total {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffd700;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.summary-info .price-note {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(233, 69, 96, 0.1);
+  border-radius: 5px;
+}
+
+.booking-summary .btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+}
+
+.booking-summary .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .movie-header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .movie-poster-large {
+    width: 250px;
+    height: 375px;
+  }
+  
+  .movie-info-large h1 {
+    font-size: 32px;
+  }
+  
+  .movie-meta-large {
+    justify-content: center;
+  }
+}
+
+
+.coupon-section {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.coupon-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.coupon-applied {
+  color: #5cb85c;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(92, 184, 92, 0.1);
+  border-radius: 8px;
+  border: 1px solid #5cb85c;
+}
+
+.discount-amount {
+  color: #5cb85c !important;
+  font-weight: bold;
+}
+
+.payment-section {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.payment-section h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #e94560;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #e94560;
+}
+
+.payment-method input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.payment-method span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.card-details,
+.upi-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card-details input,
+.upi-details input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+}
+
+.card-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+}
+
+.cash-note {
+  padding: 20px;
+  background: rgba(255, 193, 7, 0.1);
+  border: 2px solid rgba(255, 193, 7, 0.3);
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cash-note p {
+  color: #ffc107;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.payment-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.payment-actions .btn {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .coupon-section {
+    flex-direction: column;
+  }
+  
+  .card-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-actions {
+    flex-direction: column;
+  }
+}

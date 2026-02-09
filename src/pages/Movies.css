@@ -1,0 +1,37 @@
+.movies-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 50px;
+  background: linear-gradient(135deg, #e94560, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.no-movies {
+  text-align: center;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 32px;
+  }
+  
+  .movies-grid {
+    grid-template-columns: 1fr;
+  }
+}

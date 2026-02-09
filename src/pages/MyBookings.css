@@ -1,0 +1,98 @@
+.my-bookings-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.no-bookings {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-bookings p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
+}
+
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.booking-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+}
+
+.booking-poster {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.booking-info {
+  padding: 20px;
+}
+
+.booking-info h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #e94560;
+}
+
+.booking-info p {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+}
+
+.booking-info strong {
+  color: #fff;
+}
+
+.booking-info .booking-price {
+  color: #ffd700;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.booking-info .coupon-badge {
+  background: rgba(92, 184, 92, 0.2);
+  color: #5cb85c;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 10px 0;
+  border: 1px solid #5cb85c;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.booking-actions .btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .bookings-grid {
+    grid-template-columns: 1fr;
+  }
+}
