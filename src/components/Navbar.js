@@ -8,7 +8,10 @@ const Navbar = () => {
   const [admin, setAdmin] = useState(null);
   const [coupons, setCoupons] = useState([]);
   const [showOffers, setShowOffers] = useState(false);
+<<<<<<< HEAD
   const [showProfile, setShowProfile] = useState(false);
+=======
+>>>>>>> 509f81bc8571785b6747103f7593973192d2de62
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -64,6 +67,7 @@ const Navbar = () => {
           </form>
         </div>
         
+<<<<<<< HEAD
         <div className="navbar-right">
           <ul className="navbar-menu">
             <li><Link to="/">Home</Link></li>
@@ -108,6 +112,53 @@ const Navbar = () => {
                         >
                           Copy
                         </button>
+=======
+        <form className="navbar-search" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <button type="submit" className="search-btn">🔍</button>
+        </form>
+        
+        <ul className="navbar-menu">
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/movies">Movies</Link></li>
+          <li><Link to="/releases">Releases</Link></li>
+          
+          {user && (
+            <li><Link to="/my-bookings">My Bookings</Link></li>
+          )}
+          
+          {admin && (
+            <li><Link to="/admin">Dashboard</Link></li>
+          )}
+          
+          <li className="offers-dropdown">
+            <button 
+              className="offers-btn"
+              onClick={() => setShowOffers(!showOffers)}
+            >
+              🎟️ Offers {coupons.length > 0 && <span className="badge">{coupons.length}</span>}
+            </button>
+            {showOffers && coupons.length > 0 && (
+              <div className="offers-menu">
+                <div className="offers-header">
+                  <h4>Active Coupons</h4>
+                  <button className="close-btn" onClick={() => setShowOffers(false)}>✕</button>
+                </div>
+                <div className="offers-list">
+                  {coupons.map(coupon => (
+                    <div key={coupon.id} className="offer-item">
+                      <div className="offer-code">{coupon.code}</div>
+                      <div className="offer-details">
+                        <p className="offer-discount">{coupon.discount}% OFF</p>
+                        <p className="offer-desc">{coupon.description}</p>
+                        <p className="offer-expiry">Expires: {new Date(coupon.expiryDate).toLocaleDateString()}</p>
+>>>>>>> 509f81bc8571785b6747103f7593973192d2de62
                       </div>
                     ))}
                   </div>
@@ -184,8 +235,28 @@ const Navbar = () => {
                 )}
               </li>
             )}
+<<<<<<< HEAD
           </ul>
         </div>
+=======
+          </li>
+          
+          {!user && !admin && (
+            <>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/admin-login">Admin</Link></li>
+            </>
+          )}
+          
+          {(user || admin) && (
+            <li>
+              <button onClick={handleLogout} className="btn-logout">
+                Logout {user ? `(${user.name})` : '(Admin)'}
+              </button>
+            </li>
+          )}
+        </ul>
+>>>>>>> 509f81bc8571785b6747103f7593973192d2de62
       </div>
     </nav>
   );

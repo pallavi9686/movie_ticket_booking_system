@@ -289,3 +289,55 @@ export const applyCouponUsage = (code) => {
     localStorage.setItem('coupons', JSON.stringify(coupons));
   }
 };
+
+// Review Management
+export const getReviews = (movieId) => {
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+  return reviews.filter(r => r.movieId === movieId);
+};
+
+export const addReview = (reviewData) => {
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+  const currentUser = getCurrentUser();
+  
+  if (!currentUser) {
+    return { success: false, message: 'Please login to add a review' };
+  }
+
+  // Check if user already reviewed this movie
+  const existingReview = reviews.find(r => 
+    r.movieId === reviewData.movieId && r.userId === currentUser.userId
+  );
+
+  if (existingReview) {
+    return { success: false, message: 'You have already reviewed this movie' };
+  }
+
+  const newReview = {
+    id: Date.now().toString(),
+    userId: currentUser.userId,
+    userName: currentUser.name,
+    movieId: reviewData.movieId,
+    rating: reviewData.rating,
+    comment: reviewData.comment,
+    createdAt: new Date().toISOString()
+  };
+
+  reviews.push(newReview);
+  localStorage.setItem('reviews', JSON.stringify(reviews));
+  return { success: true, review: newReview };
+};
+
+export const deleteReview = (reviewId) => {
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+  const filtered = reviews.filter(r => r.id !== reviewId);
+  localStorage.setItem('reviews', JSON.stringify(filtered));
+};
+
+export const getAverageRating = (movieId) => {
+  const reviews = getReviews(movieId);
+  if (reviews.length === 0) return 0;
+  
+  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+  return (sum / reviews.length).toFixed(1);
+};

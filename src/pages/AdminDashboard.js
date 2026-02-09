@@ -28,7 +28,6 @@ const AdminDashboard = () => {
     poster: '',
     genre: '',
     duration: '',
-    rating: '',
     price: '',
     showTimings: '',
     description: ''
@@ -89,7 +88,6 @@ const AdminDashboard = () => {
       poster: '',
       genre: '',
       duration: '',
-      rating: '',
       price: '',
       showTimings: '',
       description: ''
@@ -105,7 +103,6 @@ const AdminDashboard = () => {
       poster: movie.poster,
       genre: movie.genre,
       duration: movie.duration,
-      rating: movie.rating,
       price: movie.price || '',
       showTimings: movie.showTimings.join(', '),
       description: movie.description
@@ -261,6 +258,7 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
+<<<<<<< HEAD
                   <label>Rating</label>
                   <input
                     type="text"
@@ -273,6 +271,9 @@ const AdminDashboard = () => {
                 </div>
                 <div className="form-group">
                   <label>Base Price ($)</label>
+=======
+                  <label>Base Price (₹)</label>
+>>>>>>> 509f81bc8571785b6747103f7593973192d2de62
                   <input
                     type="number"
                     name="price"
@@ -321,7 +322,6 @@ const AdminDashboard = () => {
                       poster: '',
                       genre: '',
                       duration: '',
-                      rating: '',
                       price: '',
                       showTimings: '',
                       description: ''

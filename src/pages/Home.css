@@ -255,11 +255,13 @@
 .footer-section ul li a {
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .footer-section ul li a:hover {
   color: #e94560;
+  text-decoration: underline;
 }
 
 .footer-bottom {
