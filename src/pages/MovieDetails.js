@@ -466,8 +466,15 @@ const MovieDetails = () => {
             <div className="rating-summary">
               <div className="average-rating">
                 <div className="rating-number">{averageRating || movie.rating}</div>
-                <div className="rating-stars">
-                  {'⭐'.repeat(Math.round(averageRating || movie.rating))}
+                <div className="rating-stars-display">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                      key={star}
+                      className={`star-display ${(averageRating || movie.rating) >= star ? 'active' : ''}`}
+                    >
+                      ⭐
+                    </span>
+                  ))}
                 </div>
                 <div className="rating-count">{reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}</div>
               </div>

@@ -444,8 +444,20 @@
   color: #ffd700;
 }
 
-.rating-stars {
+.rating-stars-display {
+  display: flex;
+  gap: 5px;
   font-size: 32px;
+  justify-content: center;
+}
+
+.rating-stars-display .star-display {
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.rating-stars-display .star-display.active {
+  opacity: 1;
 }
 
 .rating-count {
