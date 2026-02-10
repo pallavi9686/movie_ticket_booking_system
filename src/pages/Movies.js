@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
+import Footer from '../components/Footer';
 import { getMovies } from '../utils/storage';
 import './Movies.css';
 
@@ -44,6 +45,7 @@ const Movies = () => {
           </p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

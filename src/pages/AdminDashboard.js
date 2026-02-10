@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 import {
   getCurrentAdmin,
   getMovies,
@@ -37,7 +38,8 @@ const AdminDashboard = () => {
     discount: '',
     expiryDate: '',
     maxUsage: '',
-    description: ''
+    description: '',
+    city: 'All Cities'
   });
   const [message, setMessage] = useState({ type: '', text: '' });
   const navigate = useNavigate();
@@ -145,7 +147,8 @@ const AdminDashboard = () => {
       discount: '',
       expiryDate: '',
       maxUsage: '',
-      description: ''
+      description: '',
+      city: 'All Cities'
     });
     loadData();
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
@@ -482,6 +485,24 @@ const AdminDashboard = () => {
                     required
                   />
                 </div>
+                <div className="form-group">
+                  <label>City</label>
+                  <select
+                    name="city"
+                    value={couponForm.city}
+                    onChange={handleCouponFormChange}
+                    required
+                  >
+                    <option value="All Cities">All Cities</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                  </select>
+                </div>
               </div>
               <div className="form-group">
                 <label>Description</label>
@@ -507,6 +528,7 @@ const AdminDashboard = () => {
                     <tr>
                       <th>Code</th>
                       <th>Discount</th>
+                      <th>City</th>
                       <th>Expiry Date</th>
                       <th>Usage</th>
                       <th>Status</th>
@@ -522,6 +544,7 @@ const AdminDashboard = () => {
                         <tr key={coupon.id}>
                           <td><strong>{coupon.code}</strong></td>
                           <td>{coupon.discount}%</td>
+                          <td>📍 {coupon.city || 'All Cities'}</td>
                           <td>{new Date(coupon.expiryDate).toLocaleDateString()}</td>
                           <td>{coupon.usageCount || 0} / {coupon.maxUsage}</td>
                           <td>
@@ -548,6 +571,7 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MovieCard from '../components/MovieCard';
+import Footer from '../components/Footer';
 import { getMovies } from '../utils/storage';
 import './Releases.css';
 
@@ -57,6 +58,7 @@ const Releases = () => {
           <p className="no-movies">No releases available at the moment.</p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
