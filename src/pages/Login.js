@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser } from '../utils/storage';
+import { loginUser } from '../utils/api';
 import './Auth.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = loginUser(formData.email, formData.password);
+    setError('');
+    setLoading(true);
     
-    if (result.success) {
-      navigate('/movies');
-      window.location.reload();
-    } else {
-      setError(result.message);
+    try {
+      const result = await loginUser(formData.email, formData.password);
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('currentUser', JSON.stringify(result.user));
+      window.location.href = '/movies';
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +59,9 @@ const Login = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">Login</button>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
           </form>
           <p className="auth-link">
             Don't have an account? <Link to="/register">Register here</Link>

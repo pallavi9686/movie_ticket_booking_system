@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer';
 import {
-  getCurrentAdmin,
-  getMovies,
-  addMovie,
-  updateMovie,
-  deleteMovie,
-  getAllUsers,
-  getAllBookings,
-  cancelBooking,
-  getMovieById,
-  getCoupons,
-  addCoupon,
-  deleteCoupon
-} from '../utils/storage';
+  getAdminMovies,
+  addAdminMovie,
+  updateAdminMovie,
+  deleteAdminMovie,
+  getAdminUsers,
+  getAdminBookings,
+  cancelAdminBooking,
+  getAdminCoupons,
+  addAdminCoupon,
+  deleteAdminCoupon
+} from '../utils/api';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -23,27 +20,26 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [coupons, setCoupons] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [editingMovie, setEditingMovie] = useState(null);
   const [movieForm, setMovieForm] = useState({
     title: '',
     poster: '',
     genre: '',
     duration: '',
+    rating: '',
     price: '',
-    showTimings: '',
     description: ''
   });
   const [couponForm, setCouponForm] = useState({
     code: '',
-    discount: '',
-    expiryDate: '',
-    maxUsage: '',
-    description: '',
-    city: 'All Cities'
+    discount_percentage: '',
+    expiry_date: '',
+    max_usage: ''
   });
   const [message, setMessage] = useState({ type: '', text: '' });
   const navigate = useNavigate();
-  const currentAdmin = getCurrentAdmin();
+  const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
 
   useEffect(() => {
     if (!currentAdmin) {
@@ -51,51 +47,59 @@ const AdminDashboard = () => {
       return;
     }
     loadData();
-  }, [currentAdmin, navigate]);
+  }, []);
 
-  const loadData = () => {
-    setMovies(getMovies());
-    setUsers(getAllUsers());
-    setCoupons(getCoupons());
-    const allBookings = getAllBookings();
-    const bookingsWithMovies = allBookings.map(booking => ({
-      ...booking,
-      movie: getMovieById(booking.movieId)
-    }));
-    setBookings(bookingsWithMovies);
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const moviesData = await getAdminMovies();
+      setMovies(moviesData);
+      
+      const usersData = await getAdminUsers();
+      setUsers(usersData);
+      
+      const bookingsData = await getAdminBookings();
+      setBookings(bookingsData);
+      
+      const couponsData = await getAdminCoupons();
+      setCoupons(couponsData);
+    } catch (error) {
+      console.error('Failed to load data:', error);
+      setMessage({ type: 'error', text: error.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleMovieFormChange = (e) => {
     setMovieForm({ ...movieForm, [e.target.name]: e.target.value });
   };
 
-  const handleAddMovie = (e) => {
+  const handleAddMovie = async (e) => {
     e.preventDefault();
-    const movieData = {
-      ...movieForm,
-      showTimings: movieForm.showTimings.split(',').map(t => t.trim())
-    };
-
-    if (editingMovie) {
-      updateMovie(editingMovie.id, movieData);
-      setMessage({ type: 'success', text: 'Movie updated successfully!' });
-      setEditingMovie(null);
-    } else {
-      addMovie(movieData);
-      setMessage({ type: 'success', text: 'Movie added successfully!' });
+    try {
+      if (editingMovie) {
+        await updateAdminMovie(editingMovie.id, movieForm);
+        setMessage({ type: 'success', text: 'Movie updated successfully!' });
+        setEditingMovie(null);
+      } else {
+        await addAdminMovie(movieForm);
+        setMessage({ type: 'success', text: 'Movie added successfully!' });
+      }
+      setMovieForm({
+        title: '',
+        poster: '',
+        genre: '',
+        duration: '',
+        rating: '',
+        price: '',
+        description: ''
+      });
+      loadData();
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message });
     }
-
-    setMovieForm({
-      title: '',
-      poster: '',
-      genre: '',
-      duration: '',
-      price: '',
-      showTimings: '',
-      description: ''
-    });
-    loadData();
-    setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
 
   const handleEditMovie = (movie) => {
@@ -105,61 +109,67 @@ const AdminDashboard = () => {
       poster: movie.poster,
       genre: movie.genre,
       duration: movie.duration,
+      rating: movie.rating,
       price: movie.price || '',
-      showTimings: movie.showTimings.join(', '),
       description: movie.description
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDeleteMovie = (id) => {
+  const handleDeleteMovie = async (id) => {
     if (window.confirm('Are you sure you want to delete this movie?')) {
-      deleteMovie(id);
-      loadData();
-      setMessage({ type: 'success', text: 'Movie deleted successfully!' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      try {
+        await deleteAdminMovie(id);
+        loadData();
+        setMessage({ type: 'success', text: 'Movie deleted successfully!' });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      } catch (error) {
+        setMessage({ type: 'error', text: error.message });
+      }
     }
   };
 
-  const handleCancelBooking = (bookingId) => {
+  const handleCancelBooking = async (bookingId) => {
     if (window.confirm('Are you sure you want to cancel this booking?')) {
-      cancelBooking(bookingId);
-      loadData();
-      setMessage({ type: 'success', text: 'Booking cancelled successfully!' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      try {
+        await cancelAdminBooking(bookingId);
+        loadData();
+        setMessage({ type: 'success', text: 'Booking cancelled successfully!' });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      } catch (error) {
+        setMessage({ type: 'error', text: error.message });
+      }
     }
   };
 
-  const handleAddCoupon = (e) => {
+  const handleAddCoupon = async (e) => {
     e.preventDefault();
-    const couponData = {
-      ...couponForm,
-      discount: parseFloat(couponForm.discount),
-      maxUsage: parseInt(couponForm.maxUsage),
-      usageCount: 0,
-      active: true
-    };
-
-    addCoupon(couponData);
-    setMessage({ type: 'success', text: 'Coupon created successfully!' });
-    setCouponForm({
-      code: '',
-      discount: '',
-      expiryDate: '',
-      maxUsage: '',
-      description: '',
-      city: 'All Cities'
-    });
-    loadData();
-    setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    try {
+      await addAdminCoupon(couponForm);
+      setMessage({ type: 'success', text: 'Coupon created successfully!' });
+      setCouponForm({
+        code: '',
+        discount_percentage: '',
+        expiry_date: '',
+        max_usage: ''
+      });
+      loadData();
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message });
+    }
   };
 
-  const handleDeleteCoupon = (id) => {
+  const handleDeleteCoupon = async (id) => {
     if (window.confirm('Are you sure you want to delete this coupon?')) {
-      deleteCoupon(id);
-      loadData();
-      setMessage({ type: 'success', text: 'Coupon deleted successfully!' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      try {
+        await deleteAdminCoupon(id);
+        loadData();
+        setMessage({ type: 'success', text: 'Coupon deleted successfully!' });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      } catch (error) {
+        setMessage({ type: 'error', text: error.message });
+      }
     }
   };
 
@@ -208,6 +218,8 @@ const AdminDashboard = () => {
             {message.text}
           </div>
         )}
+
+        {loading && <p className="loading">Loading...</p>}
 
         {activeTab === 'movies' && (
           <div className="admin-section">
@@ -261,7 +273,18 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Base Price (₹)</label>
+                  <label>Rating</label>
+                  <input
+                    type="text"
+                    name="rating"
+                    value={movieForm.rating}
+                    onChange={handleMovieFormChange}
+                    placeholder="e.g., 8.5"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Base Price ($)</label>
                   <input
                     type="number"
                     name="price"
@@ -273,17 +296,6 @@ const AdminDashboard = () => {
                     required
                   />
                 </div>
-              </div>
-              <div className="form-group">
-                <label>Show Timings (comma separated)</label>
-                <input
-                  type="text"
-                  name="showTimings"
-                  value={movieForm.showTimings}
-                  onChange={handleMovieFormChange}
-                  placeholder="e.g., 10:00 AM, 2:00 PM, 6:00 PM"
-                  required
-                />
               </div>
               <div className="form-group">
                 <label>Description</label>
@@ -310,8 +322,8 @@ const AdminDashboard = () => {
                       poster: '',
                       genre: '',
                       duration: '',
+                      rating: '',
                       price: '',
-                      showTimings: '',
                       description: ''
                     });
                   }}
@@ -332,7 +344,7 @@ const AdminDashboard = () => {
                     <p>Genre: {movie.genre}</p>
                     <p>Duration: {movie.duration}</p>
                     <p>Rating: ⭐ {movie.rating}</p>
-                    <p>Price: ₹{movie.price}/seat</p>
+                    <p>Price: ${movie.price}/seat</p>
                     <div className="admin-movie-actions">
                       <button
                         onClick={() => handleEditMovie(movie)}
@@ -356,23 +368,27 @@ const AdminDashboard = () => {
 
         {activeTab === 'users' && (
           <div className="admin-section">
-            <h2>All Users</h2>
+            <h2>All Users ({users.length})</h2>
             <div className="data-table">
               {users.length > 0 ? (
                 <table>
                   <thead>
                     <tr>
-                      <th>User ID</th>
+                      <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Phone</th>
+                      <th>Joined</th>
                     </tr>
                   </thead>
                   <tbody>
                     {users.map(user => (
-                      <tr key={user.userId}>
-                        <td>{user.userId}</td>
+                      <tr key={user.id}>
+                        <td>{user.id}</td>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
+                        <td>{user.phone || 'N/A'}</td>
+                        <td>{new Date(user.created_at).toLocaleDateString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -386,7 +402,7 @@ const AdminDashboard = () => {
 
         {activeTab === 'bookings' && (
           <div className="admin-section">
-            <h2>All Bookings</h2>
+            <h2>All Bookings ({bookings.length})</h2>
             <div className="data-table">
               {bookings.length > 0 ? (
                 <table>
@@ -406,12 +422,12 @@ const AdminDashboard = () => {
                     {bookings.map(booking => (
                       <tr key={booking.id}>
                         <td>{booking.id}</td>
-                        <td>{booking.userName}</td>
-                        <td>{booking.movieTitle}</td>
-                        <td>{booking.showTime}</td>
+                        <td>{booking.user_name}</td>
+                        <td>{booking.movie_title}</td>
+                        <td>{booking.show_time}</td>
                         <td>{booking.seats.join(', ')}</td>
-                        <td>${booking.totalPrice ? booking.totalPrice.toFixed(2) : 'N/A'}</td>
-                        <td>{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                        <td>${booking.total_price ? parseFloat(booking.total_price).toFixed(2) : 'N/A'}</td>
+                        <td>{new Date(booking.booking_date).toLocaleDateString()}</td>
                         <td>
                           <button
                             onClick={() => handleCancelBooking(booking.id)}
@@ -452,8 +468,8 @@ const AdminDashboard = () => {
                   <label>Discount (%)</label>
                   <input
                     type="number"
-                    name="discount"
-                    value={couponForm.discount}
+                    name="discount_percentage"
+                    value={couponForm.discount_percentage}
                     onChange={handleCouponFormChange}
                     placeholder="e.g., 20"
                     min="1"
@@ -467,8 +483,8 @@ const AdminDashboard = () => {
                   <label>Expiry Date</label>
                   <input
                     type="date"
-                    name="expiryDate"
-                    value={couponForm.expiryDate}
+                    name="expiry_date"
+                    value={couponForm.expiry_date}
                     onChange={handleCouponFormChange}
                     required
                   />
@@ -477,50 +493,21 @@ const AdminDashboard = () => {
                   <label>Max Usage</label>
                   <input
                     type="number"
-                    name="maxUsage"
-                    value={couponForm.maxUsage}
+                    name="max_usage"
+                    value={couponForm.max_usage}
                     onChange={handleCouponFormChange}
                     placeholder="e.g., 100"
                     min="1"
                     required
                   />
                 </div>
-                <div className="form-group">
-                  <label>City</label>
-                  <select
-                    name="city"
-                    value={couponForm.city}
-                    onChange={handleCouponFormChange}
-                    required
-                  >
-                    <option value="All Cities">All Cities</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Chennai">Chennai</option>
-                    <option value="Kolkata">Kolkata</option>
-                    <option value="Pune">Pune</option>
-                    <option value="Ahmedabad">Ahmedabad</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Description</label>
-                <input
-                  type="text"
-                  name="description"
-                  value={couponForm.description}
-                  onChange={handleCouponFormChange}
-                  placeholder="e.g., Get 20% off on all bookings"
-                  required
-                />
               </div>
               <button type="submit" className="btn btn-primary">
                 Create Coupon
               </button>
             </form>
 
-            <h2>All Coupons</h2>
+            <h2>All Coupons ({coupons.length})</h2>
             <div className="data-table">
               {coupons.length > 0 ? (
                 <table>
@@ -528,29 +515,25 @@ const AdminDashboard = () => {
                     <tr>
                       <th>Code</th>
                       <th>Discount</th>
-                      <th>City</th>
                       <th>Expiry Date</th>
                       <th>Usage</th>
                       <th>Status</th>
-                      <th>Description</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {coupons.map(coupon => {
-                      const isExpired = new Date(coupon.expiryDate) < new Date();
-                      const isMaxed = coupon.usageCount >= coupon.maxUsage;
+                      const isExpired = new Date(coupon.expiry_date) < new Date();
+                      const isMaxed = coupon.usage_count >= coupon.max_usage;
                       return (
                         <tr key={coupon.id}>
                           <td><strong>{coupon.code}</strong></td>
-                          <td>{coupon.discount}%</td>
-                          <td>📍 {coupon.city || 'All Cities'}</td>
-                          <td>{new Date(coupon.expiryDate).toLocaleDateString()}</td>
-                          <td>{coupon.usageCount || 0} / {coupon.maxUsage}</td>
+                          <td>{coupon.discount_percentage}%</td>
+                          <td>{new Date(coupon.expiry_date).toLocaleDateString()}</td>
+                          <td>{coupon.usage_count || 0} / {coupon.max_usage}</td>
                           <td>
                             {isExpired ? '❌ Expired' : isMaxed ? '⚠️ Max Used' : '✅ Active'}
                           </td>
-                          <td>{coupon.description}</td>
                           <td>
                             <button
                               onClick={() => handleDeleteCoupon(coupon.id)}
@@ -571,7 +554,6 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

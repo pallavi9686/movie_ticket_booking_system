@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SeatLayout from '../components/SeatLayout';
-import { getMovieById, createBooking, getBookedSeats, getCurrentUser, calculateTotalPrice, validateCoupon, applyCouponUsage, getReviews, addReview, deleteReview, getAverageRating } from '../utils/storage';
+import { getMovieById, getBookedSeats, calculateTotalPrice, validateCoupon, createBooking } from '../utils/api';
 import './MovieDetails.css';
 
 const MovieDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedShowDate, setSelectedShowDate] = useState('');
   const [selectedShowTime, setSelectedShowTime] = useState('');
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookedSeats, setBookedSeats] = useState([]);
@@ -18,60 +18,43 @@ const MovieDetails = () => {
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvv: '', name: '' });
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
-  const [averageRating, setAverageRating] = useState(0);
-  const currentUser = getCurrentUser();
-
-  // Generate next 7 days for date selection
-  const generateDates = () => {
-    const dates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      dates.push(date);
-    }
-    return dates;
-  };
-
-  const formatDate = (date) => {
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-  };
-
-  const formatDateValue = (date) => {
-    return date.toISOString().split('T')[0];
-  };
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   useEffect(() => {
-    const movieData = getMovieById(id);
-    if (movieData) {
-      setMovie(movieData);
-      // Set default date to today
-      const today = new Date();
-      setSelectedDate(formatDateValue(today));
-      if (movieData.showTimings.length > 0) {
-        setSelectedShowTime(movieData.showTimings[0]);
+    const fetchMovie = async () => {
+      try {
+        const movieData = await getMovieById(id);
+        console.log('Fetched movie:', movieData);
+        console.log('Show timings:', movieData.showTimings);
+        setMovie(movieData);
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        setSelectedShowDate(today);
+        if (movieData.showTimings && movieData.showTimings.length > 0) {
+          console.log('Setting show time to:', movieData.showTimings[0]);
+          setSelectedShowTime(movieData.showTimings[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch movie:', error);
       }
-    }
-    // Load reviews
-    loadReviews();
+    };
+    fetchMovie();
   }, [id]);
 
-  const loadReviews = () => {
-    const movieReviews = getReviews(id);
-    setReviews(movieReviews);
-    const avgRating = getAverageRating(id);
-    setAverageRating(avgRating);
-  };
-
   useEffect(() => {
-    if (movie && selectedShowTime && selectedDate) {
-      const booked = getBookedSeats(movie.id, `${selectedDate}-${selectedShowTime}`);
-      setBookedSeats(booked);
-      setSelectedSeats([]);
+    if (movie && selectedShowDate && selectedShowTime) {
+      const fetchBookedSeats = async () => {
+        try {
+          const data = await getBookedSeats(movie.id, selectedShowTime, selectedShowDate);
+          setBookedSeats(data.bookedSeats || []);
+          setSelectedSeats([]);
+        } catch (error) {
+          console.error('Failed to fetch booked seats:', error);
+        }
+      };
+      fetchBookedSeats();
     }
-  }, [movie, selectedShowTime, selectedDate]);
+  }, [movie, selectedShowDate, selectedShowTime]);
 
   const handleSeatSelect = (seat) => {
     if (selectedSeats.includes(seat)) {
@@ -81,20 +64,25 @@ const MovieDetails = () => {
     }
   };
 
-  const handleApplyCoupon = () => {
+  const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
       setMessage({ type: 'error', text: 'Please enter a coupon code' });
       return;
     }
 
-    const result = validateCoupon(couponCode);
-    if (result.valid) {
+    try {
+      console.log('Validating coupon:', couponCode);
+      const result = await validateCoupon(couponCode);
+      console.log('Coupon validation result:', result);
       setAppliedCoupon(result.coupon);
-      setMessage({ type: 'success', text: `Coupon applied! ${result.coupon.discount}% off` });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-    } else {
-      setMessage({ type: 'error', text: result.message });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      setMessage({ type: 'success', text: `✅ Coupon applied! ${result.coupon.discount_percentage}% off` });
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+    } catch (error) {
+      console.error('Coupon validation error:', error);
+      const errorMsg = error.message || 'Invalid coupon code';
+      setMessage({ type: 'error', text: `❌ ${errorMsg}` });
+      // Keep error message longer so user can see it
+      setTimeout(() => setMessage({ type: '', text: '' }), 5000);
     }
   };
 
@@ -106,9 +94,16 @@ const MovieDetails = () => {
   };
 
   const calculateFinalAmount = () => {
-    const totalPrice = calculateTotalPrice(selectedSeats, movie.price);
+    if (!movie || selectedSeats.length === 0) return { totalPrice: 0, discount: 0, finalAmount: 0 };
+    
+    const totalPrice = selectedSeats.reduce((sum, seat) => {
+      const row = seat.charAt(0);
+      const multiplier = ['A', 'B'].includes(row) ? 0.8 : ['C', 'D'].includes(row) ? 1.0 : 1.2;
+      return sum + (movie.price * multiplier);
+    }, 0);
+    
     if (appliedCoupon) {
-      const discount = (totalPrice * appliedCoupon.discount) / 100;
+      const discount = (totalPrice * appliedCoupon.discount_percentage) / 100;
       return { totalPrice, discount, finalAmount: totalPrice - discount };
     }
     return { totalPrice, discount: 0, finalAmount: totalPrice };
@@ -129,95 +124,78 @@ const MovieDetails = () => {
     setShowPayment(true);
   };
 
-  const handleSubmitReview = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
-
+    
     if (!currentUser) {
-      setMessage({ type: 'error', text: 'Please login to submit a review' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      setMessage({ type: 'error', text: '❌ Please login to book tickets' });
+      setTimeout(() => navigate('/login'), 2000);
       return;
     }
 
-    if (!newReview.comment.trim()) {
-      setMessage({ type: 'error', text: 'Please write a comment' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setMessage({ type: 'error', text: '❌ Session expired. Please login again' });
+      setTimeout(() => navigate('/login'), 2000);
       return;
     }
-
-    const result = addReview({
-      movieId: id,
-      rating: newReview.rating,
-      comment: newReview.comment
-    });
-
-    if (result.success) {
-      setMessage({ type: 'success', text: 'Review submitted successfully!' });
-      setNewReview({ rating: 5, comment: '' });
-      loadReviews();
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-    } else {
-      setMessage({ type: 'error', text: result.message });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-    }
-  };
-
-  const handleDeleteReview = (reviewId) => {
-    if (window.confirm('Are you sure you want to delete this review?')) {
-      deleteReview(reviewId);
-      loadReviews();
-      setMessage({ type: 'success', text: 'Review deleted successfully' });
-      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-    }
-  };
-
-
-  const handlePayment = (e) => {
-    e.preventDefault();
-
+    
     if (paymentMethod === 'card') {
       if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvv || !cardDetails.name) {
-        setMessage({ type: 'error', text: 'Please fill all card details' });
+        setMessage({ type: 'error', text: '❌ Please fill all card details' });
         return;
       }
     }
 
     const { totalPrice, discount, finalAmount } = calculateFinalAmount();
-    const transactionId = 'TXN' + Date.now();
+
+    if (!selectedShowDate || selectedShowDate.trim() === '') {
+      setMessage({ type: 'error', text: '❌ Please select a show date' });
+      return;
+    }
+
+    if (!selectedShowTime || selectedShowTime.trim() === '') {
+      setMessage({ type: 'error', text: '❌ Please select a show time' });
+      return;
+    }
+
+    if (selectedSeats.length === 0) {
+      setMessage({ type: 'error', text: '❌ Please select at least one seat' });
+      return;
+    }
+
+    if (!finalAmount || finalAmount <= 0) {
+      setMessage({ type: 'error', text: '❌ Invalid booking amount' });
+      return;
+    }
 
     const bookingData = {
       movieId: movie.id,
-      movieTitle: movie.title,
-      showDate: selectedDate,
+      showDate: selectedShowDate,
       showTime: selectedShowTime,
       seats: selectedSeats,
-      totalSeats: selectedSeats.length,
-      pricePerSeat: movie.price,
-      totalPrice: totalPrice,
-      discount: discount,
-      finalAmount: finalAmount,
-      couponCode: appliedCoupon ? appliedCoupon.code : null,
-      paymentMethod: paymentMethod === 'card' ? 'Credit/Debit Card' : paymentMethod === 'upi' ? 'UPI' : 'Cash',
-      transactionId: transactionId
+      totalPrice: finalAmount
     };
 
-    const result = createBooking(bookingData);
-
-    if (result.success) {
-      if (appliedCoupon) {
-        applyCouponUsage(appliedCoupon.code);
-      }
-      setMessage({ type: 'success', text: 'Payment successful! Booking confirmed.' });
+    try {
+      console.log('Movie ID:', movie.id);
+      console.log('Show Time:', selectedShowTime);
+      console.log('Seats:', selectedSeats);
+      console.log('Total Price:', finalAmount);
+      console.log('Creating booking with data:', bookingData);
+      console.log('Token available:', !!token);
+      await createBooking(bookingData);
+      setMessage({ type: 'success', text: '✅ Payment successful! Booking confirmed.' });
       setTimeout(() => navigate('/my-bookings'), 2000);
-    } else {
-      setMessage({ type: 'error', text: result.message });
+    } catch (error) {
+      console.error('Booking error:', error);
+      setMessage({ type: 'error', text: `❌ ${error.message}` });
     }
   };
 
   if (!movie) {
     return <div className="container">Loading...</div>;
   }
-
-  const availableDates = generateDates();
 
   return (
     <div className="movie-details-page">
@@ -243,32 +221,23 @@ const MovieDetails = () => {
       <div className="booking-section">
         <div className="container">
           <h2>Book Your Seats</h2>
-
+          
           {message.text && (
             <div className={`${message.type}-message`}>
               {message.text}
             </div>
           )}
 
-          <div className="show-dates">
-            <h3>Select Date</h3>
-            <div className="show-dates-grid">
-              {availableDates.map(date => {
-                const dateValue = formatDateValue(date);
-                const isToday = dateValue === formatDateValue(new Date());
-                return (
-                  <button
-                    key={dateValue}
-                    className={`show-date-btn ${selectedDate === dateValue ? 'active' : ''}`}
-                    onClick={() => setSelectedDate(dateValue)}
-                  >
-                    <div className="date-day">{formatDate(date).split(',')[0]}</div>
-                    <div className="date-full">{formatDate(date).split(',')[1]}</div>
-                    {isToday && <div className="today-badge">Today</div>}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="show-date-section">
+            <h3>Select Show Date</h3>
+            <input
+              type="date"
+              value={selectedShowDate}
+              onChange={(e) => setSelectedShowDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              max={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+              className="date-input"
+            />
           </div>
 
           <div className="show-times">
@@ -302,11 +271,11 @@ const MovieDetails = () => {
               ) : (
                 <p>Selected Seats: None</p>
               )}
-              <p>Show Date: {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              <p>Show Date: {selectedShowDate ? new Date(selectedShowDate).toLocaleDateString() : 'Not selected'}</p>
               <p>Show Time: {selectedShowTime}</p>
-              <p>Base Price per Seat: ₹{movie.price}</p>
+              <p>Base Price per Seat: ${movie.price}</p>
               <p className="price-note">💡 Rows A-B: 20% off | Rows C-D: Standard | Rows E-F: 20% premium</p>
-
+              
               {!showPayment && (
                 <>
                   <div className="coupon-section">
@@ -328,36 +297,41 @@ const MovieDetails = () => {
                       </button>
                     )}
                   </div>
+                  {message.type === 'error' && (
+                    <p className="coupon-error">
+                      {message.text}
+                    </p>
+                  )}
                   {appliedCoupon && (
                     <p className="coupon-applied">
-                      🎟️ {appliedCoupon.discount}% discount applied!
+                      🎟️ {appliedCoupon.discount_percentage}% discount applied!
                     </p>
                   )}
                 </>
               )}
-
+              
               {(() => {
                 const { totalPrice, discount, finalAmount } = calculateFinalAmount();
                 return (
                   <>
-                    <p>Subtotal: ₹{totalPrice.toFixed(2)}</p>
+                    <p>Subtotal: ${totalPrice.toFixed(2)}</p>
                     {discount > 0 && (
-                      <p className="discount-amount">Discount: -₹{discount.toFixed(2)}</p>
+                      <p className="discount-amount">Discount: -${discount.toFixed(2)}</p>
                     )}
-                    <p className="total">Total Amount: ₹{finalAmount.toFixed(2)}</p>
+                    <p className="total">Total Amount: ${finalAmount.toFixed(2)}</p>
                   </>
                 );
               })()}
             </div>
-
+            
             {!showPayment ? (
               <button
                 className="btn btn-primary"
                 onClick={handleProceedToPayment}
                 disabled={selectedSeats.length === 0}
               >
-                {selectedSeats.length > 0
-                  ? `Proceed to Payment - ₹${calculateFinalAmount().finalAmount.toFixed(2)}`
+                {selectedSeats.length > 0 
+                  ? `Proceed to Payment - $${calculateFinalAmount().finalAmount.toFixed(2)}`
                   : 'Select Seats to Continue'
                 }
               </button>
@@ -446,7 +420,7 @@ const MovieDetails = () => {
 
                   <div className="payment-actions">
                     <button type="submit" className="btn btn-primary">
-                      Confirm Payment - ₹{calculateFinalAmount().finalAmount.toFixed(2)}
+                      Confirm Payment - ${calculateFinalAmount().finalAmount.toFixed(2)}
                     </button>
                     <button type="button" onClick={() => setShowPayment(false)} className="btn btn-secondary">
                       Back
@@ -457,114 +431,9 @@ const MovieDetails = () => {
             )}
           </div>
         </div>
-
-        {/* Reviews Section */}
-        <div className="reviews-section">
-          <div className="container">
-            <h2>User Reviews & Ratings</h2>
-            
-            <div className="rating-summary">
-              <div className="average-rating">
-                <div className="rating-number">{averageRating || movie.rating}</div>
-                <div className="rating-stars-display">
-                  {[1, 2, 3, 4, 5].map(star => (
-                    <span
-                      key={star}
-                      className={`star-display ${(averageRating || movie.rating) >= star ? 'active' : ''}`}
-                    >
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-                <div className="rating-count">{reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}</div>
-              </div>
-            </div>
-
-            {/* Add Review Form */}
-            {currentUser && (
-              <div className="add-review-form">
-                <h3>Write a Review</h3>
-                <form onSubmit={handleSubmitReview}>
-                  <div className="rating-input">
-                    <label>Your Rating:</label>
-                    <div className="star-rating">
-                      {[1, 2, 3, 4, 5].map(star => (
-                        <span
-                          key={star}
-                          className={`star ${newReview.rating >= star ? 'active' : ''}`}
-                          onClick={() => setNewReview({ ...newReview, rating: star })}
-                        >
-                          ⭐
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="comment-input">
-                    <label>Your Comment:</label>
-                    <textarea
-                      value={newReview.comment}
-                      onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-                      placeholder="Share your thoughts about this movie..."
-                      rows="4"
-                      required
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary">Submit Review</button>
-                </form>
-              </div>
-            )}
-
-            {!currentUser && (
-              <div className="login-prompt">
-                <p>Please <a href="/login">login</a> to write a review</p>
-              </div>
-            )}
-
-            {/* Reviews List */}
-            <div className="reviews-list">
-              {reviews.length === 0 ? (
-                <p className="no-reviews">No reviews yet. Be the first to review this movie!</p>
-              ) : (
-                reviews.map(review => (
-                  <div key={review.id} className="review-card">
-                    <div className="review-header">
-                      <div className="review-user">
-                        <div className="user-avatar">{review.userName.charAt(0).toUpperCase()}</div>
-                        <div className="user-info">
-                          <h4>{review.userName}</h4>
-                          <div className="review-rating">
-                            {'⭐'.repeat(review.rating)}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="review-meta">
-                        <span className="review-date">
-                          {new Date(review.createdAt).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                          })}
-                        </span>
-                        {currentUser && currentUser.userId === review.userId && (
-                          <button 
-                            className="btn-delete-review"
-                            onClick={() => handleDeleteReview(review.id)}
-                          >
-                            🗑️
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                    <p className="review-comment">{review.comment}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
-}
+};
 
 export default MovieDetails;

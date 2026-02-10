@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getUserBookings, getMovieById, getCurrentUser, cancelBooking, calculateSeatPrice } from '../utils/storage';
+import { getMovieById, getUserBookings, cancelBooking } from '../utils/api';
 import './BookingDetails.css';
 
 const BookingDetails = () => {
@@ -8,7 +8,8 @@ const BookingDetails = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState(null);
   const [movie, setMovie] = useState(null);
-  const currentUser = getCurrentUser();
+  const [loading, setLoading] = useState(true);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   useEffect(() => {
     if (!currentUser) {
@@ -16,22 +17,37 @@ const BookingDetails = () => {
       return;
     }
 
-    const userBookings = getUserBookings(currentUser.userId);
-    const foundBooking = userBookings.find(b => b.id === id);
-    
-    if (foundBooking) {
-      setBooking(foundBooking);
-      const movieData = getMovieById(foundBooking.movieId);
-      setMovie(movieData);
-    } else {
-      navigate('/my-bookings');
-    }
+    const fetchBooking = async () => {
+      try {
+        const userBookings = await getUserBookings(currentUser.userId);
+        const foundBooking = userBookings.find(b => b.id === parseInt(id));
+        
+        if (foundBooking) {
+          setBooking(foundBooking);
+          const movieData = await getMovieById(foundBooking.movie_id);
+          setMovie(movieData);
+        } else {
+          navigate('/my-bookings');
+        }
+      } catch (error) {
+        console.error('Failed to fetch booking:', error);
+        navigate('/my-bookings');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooking();
   }, [id, currentUser, navigate]);
 
-  const handleCancelBooking = () => {
+  const handleCancelBooking = async () => {
     if (window.confirm('Are you sure you want to cancel this booking?')) {
-      cancelBooking(booking.id);
-      navigate('/my-bookings');
+      try {
+        await cancelBooking(booking.id);
+        navigate('/my-bookings');
+      } catch (error) {
+        alert('Failed to cancel booking: ' + error.message);
+      }
     }
   };
 
@@ -39,8 +55,12 @@ const BookingDetails = () => {
     window.print();
   };
 
-  if (!booking || !movie) {
+  if (loading) {
     return <div className="container">Loading...</div>;
+  }
+
+  if (!booking || !movie) {
+    return <div className="container">Booking not found</div>;
   }
 
   return (
@@ -56,7 +76,7 @@ const BookingDetails = () => {
             <div className="movie-section">
               <img src={movie.poster} alt={movie.title} className="ticket-poster" />
               <div className="movie-details">
-                <h2>{booking.movieTitle}</h2>
+                <h2>{movie.title}</h2>
                 <p>⭐ {movie.rating} | 🕐 {movie.duration}</p>
                 <p>🎭 {movie.genre}</p>
               </div>
@@ -64,94 +84,42 @@ const BookingDetails = () => {
 
             <div className="booking-details-section">
               <div className="detail-row">
+                <span className="label">Show Date:</span>
+                <span className="value">{booking.show_date ? new Date(booking.show_date).toLocaleDateString() : 'N/A'}</span>
+              </div>
+              <div className="detail-row">
                 <span className="label">Show Time:</span>
-                <span className="value">{booking.showTime}</span>
+                <span className="value">{booking.show_time}</span>
               </div>
               <div className="detail-row">
                 <span className="label">Booking Date:</span>
-                <span className="value">{new Date(booking.bookingDate).toLocaleString()}</span>
+                <span className="value">{new Date(booking.booking_date).toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="label">Customer Name:</span>
-                <span className="value">{booking.userName}</span>
+                <span className="value">{currentUser.name}</span>
               </div>
               <div className="detail-row">
                 <span className="label">Email:</span>
-                <span className="value">{booking.userEmail}</span>
+                <span className="value">{currentUser.email}</span>
               </div>
             </div>
 
             <div className="seats-breakdown">
-              <h3>Seat-wise Pricing</h3>
-              <table className="seats-table">
-                <thead>
-                  <tr>
-                    <th>Seat</th>
-                    <th>Row Type</th>
-                    <th>Base Price</th>
-                    <th>Multiplier</th>
-                    <th>Final Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {booking.seats.map(seat => {
-                    const row = seat.charAt(0);
-                    const rowType = ['A', 'B'].includes(row) ? 'Front (20% off)' : 
-                                   ['C', 'D'].includes(row) ? 'Middle (Standard)' : 
-                                   'Back (20% premium)';
-                    const multiplier = ['A', 'B'].includes(row) ? '0.8x' : 
-                                      ['C', 'D'].includes(row) ? '1.0x' : '1.2x';
-                    const basePrice = booking.pricePerSeat || movie.price || 15;
-                    const seatPrice = calculateSeatPrice(seat, basePrice);
-                    
-                    return (
-                      <tr key={seat}>
-                        <td className="seat-number">{seat}</td>
-                        <td>{rowType}</td>
-                        <td>₹{Number(basePrice).toFixed(2)}</td>
-                        <td>{multiplier}</td>
-                        <td className="seat-price">₹{seatPrice.toFixed(2)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <h3>Selected Seats</h3>
+              <p className="seats-list">{booking.seats.join(', ')}</p>
             </div>
 
             <div className="payment-summary">
               <h3>Payment Summary</h3>
               <div className="summary-row">
-                <span>Subtotal ({booking.totalSeats} seats):</span>
-                <span>${booking.totalPrice.toFixed(2)}</span>
+                <span>Total Amount:</span>
+                <span>${parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
-              {booking.couponCode && (
-                <>
-                  <div className="summary-row coupon-applied">
-                    <span>Coupon ({booking.couponCode}):</span>
-                    <span>-${booking.discount.toFixed(2)}</span>
-                  </div>
-                  <div className="summary-row">
-                    <span>Amount After Discount:</span>
-                    <span>${booking.finalAmount.toFixed(2)}</span>
-                  </div>
-                </>
-              )}
               <div className="summary-row total-row">
-                <span>Total Paid:</span>
-                <span>${(booking.finalAmount || booking.totalPrice).toFixed(2)}</span>
+                <span>Amount Paid:</span>
+                <span>${parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
-              {booking.paymentMethod && (
-                <div className="summary-row">
-                  <span>Payment Method:</span>
-                  <span>{booking.paymentMethod}</span>
-                </div>
-              )}
-              {booking.transactionId && (
-                <div className="summary-row">
-                  <span>Transaction ID:</span>
-                  <span>{booking.transactionId}</span>
-                </div>
-              )}
             </div>
           </div>
 

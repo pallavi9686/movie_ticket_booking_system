@@ -1,49 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser } from '../utils/storage';
+import { registerUser } from '../utils/api';
 import './Auth.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    mobile: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phone: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    // Validate mobile number (basic validation for 10 digits)
-    const mobileRegex = /^[0-9]{10}$/;
-    if (!mobileRegex.test(formData.mobile)) {
-      setError('Please enter a valid 10-digit mobile number');
-      return;
-    }
-
-    const result = registerUser({
-      name: formData.name,
-      email: formData.email,
-      mobile: formData.mobile,
-      password: formData.password
-    });
-    
-    if (result.success) {
+    setLoading(true);
+    try {
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone
+      });
       navigate('/login');
-    } else {
-      setError(result.message);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,15 +74,13 @@ const Register = () => {
               />
             </div>
             <div className="form-group">
-              <label>Mobile Number</label>
+              <label>Phone (Optional)</label>
               <input
                 type="tel"
-                name="mobile"
-                value={formData.mobile}
+                name="phone"
+                value={formData.phone}
                 onChange={handleChange}
-                placeholder="Enter your 10-digit mobile number"
-                pattern="[0-9]{10}"
-                required
+                placeholder="Enter your phone number"
               />
             </div>
             <div className="form-group">
@@ -110,7 +105,9 @@ const Register = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">Register</button>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
           </form>
           <p className="auth-link">
             Already have an account? <Link to="/login">Login here</Link>

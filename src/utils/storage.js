@@ -19,7 +19,7 @@ export const initializeApp = () => {
         genre: 'Action, Crime, Drama',
         duration: '152 min',
         rating: '9.0',
-        price: 250,
+        price: 15,
         showTimings: ['10:00 AM', '2:00 PM', '6:00 PM', '9:30 PM'],
         description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.'
       },
@@ -30,7 +30,7 @@ export const initializeApp = () => {
         genre: 'Action, Sci-Fi, Thriller',
         duration: '148 min',
         rating: '8.8',
-        price: 300,
+        price: 18,
         showTimings: ['11:00 AM', '3:00 PM', '7:00 PM', '10:00 PM'],
         description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.'
       },
@@ -41,7 +41,7 @@ export const initializeApp = () => {
         genre: 'Adventure, Drama, Sci-Fi',
         duration: '169 min',
         rating: '8.6',
-        price: 350,
+        price: 20,
         showTimings: ['10:30 AM', '2:30 PM', '6:30 PM', '9:00 PM'],
         description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.'
       }
@@ -288,56 +288,4 @@ export const applyCouponUsage = (code) => {
     coupons[couponIndex].usageCount = (coupons[couponIndex].usageCount || 0) + 1;
     localStorage.setItem('coupons', JSON.stringify(coupons));
   }
-};
-
-// Review Management
-export const getReviews = (movieId) => {
-  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-  return reviews.filter(r => r.movieId === movieId);
-};
-
-export const addReview = (reviewData) => {
-  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-  const currentUser = getCurrentUser();
-  
-  if (!currentUser) {
-    return { success: false, message: 'Please login to add a review' };
-  }
-
-  // Check if user already reviewed this movie
-  const existingReview = reviews.find(r => 
-    r.movieId === reviewData.movieId && r.userId === currentUser.userId
-  );
-
-  if (existingReview) {
-    return { success: false, message: 'You have already reviewed this movie' };
-  }
-
-  const newReview = {
-    id: Date.now().toString(),
-    userId: currentUser.userId,
-    userName: currentUser.name,
-    movieId: reviewData.movieId,
-    rating: reviewData.rating,
-    comment: reviewData.comment,
-    createdAt: new Date().toISOString()
-  };
-
-  reviews.push(newReview);
-  localStorage.setItem('reviews', JSON.stringify(reviews));
-  return { success: true, review: newReview };
-};
-
-export const deleteReview = (reviewId) => {
-  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-  const filtered = reviews.filter(r => r.id !== reviewId);
-  localStorage.setItem('reviews', JSON.stringify(filtered));
-};
-
-export const getAverageRating = (movieId) => {
-  const reviews = getReviews(movieId);
-  if (reviews.length === 0) return 0;
-  
-  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-  return (sum / reviews.length).toFixed(1);
 };
