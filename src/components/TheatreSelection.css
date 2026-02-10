@@ -1,0 +1,191 @@
+.theatre-selection {
+  margin: 30px 0;
+}
+
+.theatre-selection h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.no-shows {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.theatres-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.theatre-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.theatre-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(233, 69, 96, 0.3);
+}
+
+.theatre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.theatre-info {
+  flex: 1;
+}
+
+.theatre-name {
+  font-size: 20px;
+  color: #e94560;
+  margin-bottom: 8px;
+}
+
+.theatre-location {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.theatre-facilities {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.facility-tag {
+  background: rgba(233, 69, 96, 0.2);
+  color: #e94560;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.facility-more {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  padding: 4px 8px;
+}
+.theatre-select-btn {
+  background: linear-gradient(135deg, #e94560, #ff6b6b);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.theatre-select-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+}
+
+.theatre-select-btn.active {
+  background: #5cb85c;
+}
+
+.shows-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.shows-section h5 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.shows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.show-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.show-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(233, 69, 96, 0.5);
+  transform: translateY(-2px);
+}
+
+.show-card.selected {
+  background: rgba(233, 69, 96, 0.2);
+  border-color: #e94560;
+}
+
+.show-time {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.show-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.screen-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.screen-type {
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.show-price {
+  color: #5cb85c;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.available-seats {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .theatre-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .shows-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  
+  .show-card {
+    padding: 12px;
+  }
+}

@@ -14,6 +14,7 @@ import {
   addCoupon,
   deleteCoupon
 } from '../utils/storage';
+import TheatreManagement from '../components/TheatreManagement';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -181,6 +182,12 @@ const AdminDashboard = () => {
             Manage Movies
           </button>
           <button
+            className={`tab-btn ${activeTab === 'theatres' ? 'active' : ''}`}
+            onClick={() => setActiveTab('theatres')}
+          >
+            Manage Theatres
+          </button>
+          <button
             className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
             onClick={() => setActiveTab('users')}
           >
@@ -258,7 +265,6 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
-<<<<<<< HEAD
                   <label>Rating</label>
                   <input
                     type="text"
@@ -271,9 +277,6 @@ const AdminDashboard = () => {
                 </div>
                 <div className="form-group">
                   <label>Base Price ($)</label>
-=======
-                  <label>Base Price (₹)</label>
->>>>>>> 509f81bc8571785b6747103f7593973192d2de62
                   <input
                     type="number"
                     name="price"
@@ -363,6 +366,12 @@ const AdminDashboard = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeTab === 'theatres' && (
+          <div className="admin-section">
+            <TheatreManagement />
           </div>
         )}
 

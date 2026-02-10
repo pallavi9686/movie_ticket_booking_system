@@ -58,6 +58,87 @@ export const initializeApp = () => {
   if (!localStorage.getItem('bookings')) {
     localStorage.setItem('bookings', JSON.stringify([]));
   }
+
+  // Initialize theatre system
+  initializeTheatres();
+};
+
+// Import and initialize theatre system
+const initializeTheatres = () => {
+  if (!localStorage.getItem('theatres')) {
+    const defaultTheatres = [
+      {
+        id: '1',
+        name: 'PVR Cinemas - Phoenix Mall',
+        location: 'Phoenix Mall, Whitefield, Bangalore',
+        address: '2nd Floor, Phoenix Marketcity, Whitefield Road, Bangalore - 560066',
+        facilities: ['Dolby Atmos', 'Recliner Seats', 'Food Court', 'Parking'],
+        screens: [
+          {
+            id: 'screen1',
+            name: 'Screen 1',
+            type: 'Premium',
+            totalSeats: 120,
+            seatLayout: {
+              rows: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+              seatsPerRow: 15,
+              premiumRows: ['G', 'H'],
+              standardRows: ['D', 'E', 'F'],
+              economyRows: ['A', 'B', 'C']
+            }
+          }
+        ]
+      },
+      {
+        id: '2',
+        name: 'INOX - Forum Mall',
+        location: 'Forum Mall, Koramangala, Bangalore',
+        address: '3rd Floor, Forum Mall, Hosur Road, Koramangala, Bangalore - 560029',
+        facilities: ['IMAX', '4DX', 'Premium Dining', 'Valet Parking'],
+        screens: [
+          {
+            id: 'screen1',
+            name: 'IMAX Screen',
+            type: 'IMAX',
+            totalSeats: 200,
+            seatLayout: {
+              rows: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+              seatsPerRow: 20,
+              premiumRows: ['G', 'H', 'I', 'J'],
+              standardRows: ['D', 'E', 'F'],
+              economyRows: ['A', 'B', 'C']
+            }
+          }
+        ]
+      }
+    ];
+    localStorage.setItem('theatres', JSON.stringify(defaultTheatres));
+  }
+
+  // Initialize theatre shows
+  if (!localStorage.getItem('theatreShows')) {
+    const defaultShows = [
+      {
+        id: '1',
+        movieId: '1',
+        theatreId: '1',
+        screenId: 'screen1',
+        showDate: new Date().toISOString().split('T')[0],
+        showTime: '10:00',
+        basePrice: 200
+      },
+      {
+        id: '2',
+        movieId: '1',
+        theatreId: '2',
+        screenId: 'screen1',
+        showDate: new Date().toISOString().split('T')[0],
+        showTime: '14:00',
+        basePrice: 350
+      }
+    ];
+    localStorage.setItem('theatreShows', JSON.stringify(defaultShows));
+  }
 };
 
 // User Management

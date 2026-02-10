@@ -44,7 +44,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-<<<<<<< HEAD
   background: rgba(255, 255, 255, 0.1);
   border-radius: 25px;
   padding: 8px 15px;
@@ -66,23 +65,6 @@
   font-size: 14px;
   width: 200px;
   transition: width 0.3s ease;
-=======
-  flex: 1;
-  max-width: 400px;
-  margin: 0 30px;
-}
-
-.search-input {
-  flex: 1;
-  padding: 10px 15px;
-  border: 2px solid rgba(233, 69, 96, 0.3);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
->>>>>>> 509f81bc8571785b6747103f7593973192d2de62
 }
 
 .search-input::placeholder {
@@ -90,7 +72,6 @@
 }
 
 .search-input:focus {
-<<<<<<< HEAD
   width: 250px;
 }
 
@@ -108,27 +89,6 @@
 
 .search-btn:hover {
   transform: scale(1.1);
-=======
-  border-color: #e94560;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.search-btn {
-  background: rgba(233, 69, 96, 0.2);
-  border: 2px solid #e94560;
-  color: #e94560;
-  padding: 8px 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.search-btn:hover {
-  background: #e94560;
-  color: #fff;
-  transform: scale(1.05);
->>>>>>> 509f81bc8571785b6747103f7593973192d2de62
 }
 
 .navbar-menu {
@@ -163,6 +123,205 @@
 
 .navbar-menu li a:hover {
   color: #e94560;
+}
+
+/* Releases link special styling */
+.navbar-menu li a[href="/releases"] {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.navbar-menu li a[href="/releases"]::after {
+  background: #ffd700;
+}
+
+.navbar-menu li a[href="/releases"]:hover {
+  color: #ffed4e;
+}
+
+/* Theatres link special styling */
+.navbar-menu li a[href="/theatres"] {
+  color: #00b894;
+  font-weight: 600;
+}
+
+.navbar-menu li a[href="/theatres"]::after {
+  background: #00b894;
+}
+
+.navbar-menu li a[href="/theatres"]:hover {
+  color: #00cec9;
+}
+
+/* Download Tickets Dropdown */
+.download-tickets-dropdown {
+  position: relative;
+}
+
+.download-tickets-btn {
+  background: rgba(0, 184, 148, 0.1);
+  color: #00b894;
+  border: 2px solid #00b894;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.download-tickets-btn:hover {
+  background: rgba(0, 184, 148, 0.2);
+  transform: translateY(-2px);
+}
+
+.download-tickets-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #00b894;
+  border-radius: 12px;
+  min-width: 400px;
+  max-height: 500px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.download-tickets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 184, 148, 0.2);
+  background: rgba(0, 184, 148, 0.05);
+  border-radius: 10px 10px 0 0;
+}
+
+.download-tickets-header h4 {
+  color: #00b894;
+  font-size: 16px;
+  margin: 0;
+}
+
+.download-tickets-list {
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.download-ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 184, 148, 0.1);
+  transition: all 0.3s ease;
+}
+
+.download-ticket-item:hover {
+  background: rgba(0, 184, 148, 0.1);
+  border-color: #00b894;
+}
+
+.ticket-info {
+  flex: 1;
+}
+
+.ticket-movie {
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.ticket-details {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.ticket-seats {
+  color: #00b894;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ticket-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.download-btn {
+  background: rgba(0, 184, 148, 0.2);
+  color: #00b894;
+  border: 1px solid #00b894;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  background: #00b894;
+  color: #fff;
+}
+
+.view-btn {
+  background: rgba(233, 69, 96, 0.2);
+  color: #e94560;
+  border: 1px solid #e94560;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.view-btn:hover {
+  background: #e94560;
+  color: #fff;
+}
+
+.no-bookings-message {
+  text-align: center;
+  padding: 30px 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.no-bookings-message p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.no-bookings-message a {
+  color: #00b894;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid #00b894;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.no-bookings-message a:hover {
+  background: #00b894;
+  color: #fff;
 }
 
 .offers-dropdown {
@@ -546,6 +705,27 @@
     width: 20px;
     height: 20px;
     font-size: 10px;
+  }
+
+  .download-tickets-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .download-tickets-menu {
+    min-width: 350px;
+    right: -30px;
+  }
+
+  .download-ticket-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ticket-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .profile-btn {

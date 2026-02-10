@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
+import Theatres from './pages/Theatres';
 import MovieDetails from './pages/MovieDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
+          <Route path="/theatres" element={<Theatres />} />
           <Route path="/releases" element={<Releases />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/login" element={<Login />} />
