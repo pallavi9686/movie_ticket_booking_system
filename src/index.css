@@ -1,21 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-:root{
-  --accent: #6c5ce7;
-  --accent-2: #00b894;
-  --bg: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  --surface: rgba(255, 255, 255, 0.05);
-  --muted: #b0b7c3;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.8);
-  --glass: rgba(255,255,255,0.1);
-  --shadow: 0 6px 20px rgba(16,24,40,0.15);
-  --radius: 12px;
-  --overlay-text:#ffffff;
-  --overlay-desc:rgba(255,255,255,0.9);
-  --overlay-title-fallback:#ffffff;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -23,115 +5,16 @@
 }
 
 body {
-  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   color: #fff;
-  margin: 0;
-  line-height: 1.4;
-  -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
-
-.app-header{padding:16px;background:transparent}
 
 #root {
   min-height: 100vh;
 }
 
-.logo{font-weight:700;color:var(--accent);text-decoration:none}
-.container{max-width:1200px;margin:28px auto;padding:0 18px}
-.card{background:var(--surface);padding:12px;border-radius:8px;box-shadow:var(--shadow);color:var(--text-primary)}
-.grid{display:grid;gap:18px}
-.movies-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
-.movie-poster{width:100%;height:300px;object-fit:cover;border-radius:10px}
-.button{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(108,92,231,0.14)}
-
-.hero{display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(90deg,rgba(108,92,231,0.12),rgba(0,184,148,0.06));padding:28px;border-radius:var(--radius);margin-bottom:20px}
-.hero .title{font-size:28px;margin:0;color:var(--text-primary)}
-.hero .subtitle{color:var(--text-secondary);margin-top:6px}
-.hero .cta{display:flex;gap:12px;align-items:center}
-
-.search-bar{display:flex;gap:10px;margin:8px 0;align-items:center}
-.search-input,.genre-input,.date-input{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:var(--glass);min-width:0;color:var(--text-primary)}
-.search-input{flex:1;font-size:16px}
-
-/* Enhanced search bar */
-.search-bar.enhanced{background:linear-gradient(90deg, rgba(108,92,231,0.04), rgba(0,184,148,0.02));padding:8px;border-radius:12px}
-.search-input-wrap{display:flex;align-items:center;gap:8px;flex:1;padding:6px 8px;background:rgba(255,255,255,0.1);border-radius:10px;border:1px solid rgba(255,255,255,0.2)}
-.search-icon{color:var(--text-secondary);margin-left:6px}
-.search-input-wrap .search-input{border:none;background:transparent;padding:8px 6px;margin:0;font-size:16px;color:var(--text-primary)}
-.search-input::placeholder{font-size:15px;color:var(--text-secondary)}
-.search-input:focus{outline:none}
-.genre-input,.date-input{width:160px;color:var(--text-primary)}
-.clear-btn{background:transparent;color:var(--text-secondary);border:1px solid rgba(255,255,255,0.2);padding:8px 10px;border-radius:8px}
-.clear-btn:hover{background:rgba(255,255,255,0.1)}
-
-.card h3{margin:10px 0 6px 0;font-size:16px;color:var(--text-primary)}
-.card p{margin:0;color:var(--text-secondary);font-size:13px}
-.card:hover{transform:translateY(-6px);transition:transform .18s ease}
-
-.badge{display:inline-block;padding:6px 8px;background:rgba(255,255,255,0.1);border-radius:999px;font-size:12px;color:var(--text-secondary);}
-
-.movies-grid{margin-top:6px}
-/* Movie card enhancements */
-.movie-card{padding:0;overflow:hidden;border-radius:12px}
-.poster-wrap{position:relative;border-radius:12px;overflow:hidden}
-.rating-badge{position:absolute;left:10px;top:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:6px 8px;border-radius:8px;font-weight:600;font-size:13px;box-shadow:0 6px 18px rgba(108,92,231,0.16)}
-.chip{position:absolute;right:10px;top:10px;background:rgba(255,255,255,0.9);padding:6px 8px;border-radius:999px;font-size:12px;color:#333;}
-.movie-info{padding:14px}
-.meta-row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px}
-.desc{color:var(--text-secondary);font-size:13px;margin-top:8px;min-height:40px}
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;transition:opacity .18s ease;background:linear-gradient(180deg, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.6) 100%);opacity:1}
-
-/* Overlay text and title styles */
-.overlay-content{color:var(--overlay-text)}
-.overlay-title{font-weight:700;font-size:16px;margin-bottom:6px;line-height:1.1}
-/* gradient title with fallback */
-.overlay-title{
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.overlay .small-note{color:var(--overlay-desc)}
-.overlay .desc{color:rgba(255,255,255,0.85);font-size:13px;margin-top:8px;max-height:60px;overflow:hidden}
-.card-actions{display:flex;gap:8px;margin-top:10px}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--text-primary);padding:8px 10px;border-radius:8px;cursor:pointer}
-.small-note{font-size:12px;color:var(--text-secondary)}
-
-/* Blue Book Now button for featured movie */
-.btn-book-blue{background:linear-gradient(90deg,#2563eb,#1e40af);color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 8px 20px rgba(37,99,235,0.14)}
-.btn-book-blue:hover{transform:translateY(-3px);transition:transform .12s ease}
-
-/* seat basics (kept for backward compatibility) */
-.seat{width:34px;height:34px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;margin:4px;cursor:pointer;border:none}
-.seat.available{background:rgba(108,92,231,0.2);color:var(--text-primary)}
-.seat.selected{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
-.seat.booked{background:#555;color:#999;cursor:not-allowed}
-
-/* Enhanced seat map styles */
-.seat-map{background:linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));padding:18px;border-radius:12px;box-shadow:var(--shadow);}
-.seat-grid{display:flex;flex-direction:column;gap:8px}
-.seat-row{display:flex;align-items:center;gap:8px}
-.row-label{width:26px;text-align:center;color:var(--text-secondary);font-weight:600}
-.seat{width:40px;height:40px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;margin:4px;cursor:pointer;font-weight:600}
-.seat.available{background:rgba(108,92,231,0.2);color:var(--text-primary)}
-.seat.selected{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;transform:translateY(-4px);box-shadow:0 8px 18px rgba(108,92,231,0.18)}
-.seat.booked{background:#555;color:#999;cursor:not-allowed}
-.seat:focus{outline:3px solid rgba(108,92,231,0.18);outline-offset:3px}
-.seat:hover:not(.booked){transform:translateY(-3px);transition:transform .12s ease}
-.seat.disabled{opacity:0.5;cursor:not-allowed}
-.legend{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-.legend .item{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text-secondary)}
-.legend .swatch{width:18px;height:18px;border-radius:4px}
-.swatch.available{background:rgba(108,92,231,0.2)}
-.swatch.selected{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-.swatch.booked{background:#555}
-.seat-note{font-size:13px;color:var(--text-secondary);margin-bottom:8px}
-.summary{background:var(--surface);padding:14px;border-radius:10px;box-shadow:var(--shadow);color:var(--text-primary)}
-.footer-note{font-size:13px;color:var(--text-secondary);margin-top:12px}
-
-/* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -147,17 +30,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #ff6b6b;
-}
-
-/* Media queries */
-@media (max-width:600px){
-  .movie-poster{height:180px}
-}
-
-@media (max-width:820px){
-  .search-bar.enhanced{flex-direction:column;align-items:stretch}
-  .genre-input,.date-input{width:100%}
-  .search-input-wrap{width:100%}
-  .hero{flex-direction:column;align-items:flex-start}
-  .hero .title{font-size:22px}
 }

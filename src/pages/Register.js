@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser } from '../utils/storage';
+import { registerUser } from '../utils/api';
 import './Auth.css';
 
 const Register = () => {
@@ -8,33 +8,39 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phone: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    const result = registerUser({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    });
-    
-    if (result.success) {
+    setLoading(true);
+    try {
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone
+      });
       navigate('/login');
-    } else {
-      setError(result.message);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +74,16 @@ const Register = () => {
               />
             </div>
             <div className="form-group">
+              <label>Phone (Optional)</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="form-group">
               <label>Password</label>
               <input
                 type="password"
@@ -89,7 +105,9 @@ const Register = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">Register</button>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
           </form>
           <p className="auth-link">
             Already have an account? <Link to="/login">Login here</Link>

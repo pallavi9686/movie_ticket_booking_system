@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "KGF Chapter 2",
+    "genre": "Action",
+    "duration": "2h 48m",
+    "rating": "8.4",
+    "poster": "https://picsum.photos/seed/kgf2/400/600",
+    "description": "The blood-soaked land of Kolar Gold Fields (KGF) has a new overlord now - Rocky, whose name strikes fear in the heart of his foes.",
+    "cast": ["Yash", "Sanjay Dutt", "Raveena Tandon", "Srinidhi Shetty"],
+    "trailer": "https://www.youtube.com/embed/JKa05nyUmuQ",
+    "showtimes": ["2026-02-08T14:00", "2026-02-08T17:30", "2026-02-08T20:00"]
+  },
+  {
+    "id": "2",
+    "title": "Kantara",
+    "genre": "Action/Drama",
+    "duration": "2h 28m",
+    "rating": "8.2",
+    "poster": "https://picsum.photos/seed/kantara/400/600",
+    "description": "A legendary Kambala champion attempts to reconcile with his past and uphold the promise made to his mother.",
+    "cast": ["Rishab Shetty", "Sapthami Gowda", "Kishore Kumar G"],
+    "trailer": "https://www.youtube.com/embed/8mrVmf239GU",
+    "showtimes": ["2026-02-08T13:00", "2026-02-08T16:30", "2026-02-08T19:30"]
+  },
+  {
+    "id": "3",
+    "title": "RRR",
+    "genre": "Action/Drama",
+    "duration": "3h 7m",
+    "rating": "8.8",
+    "poster": "https://picsum.photos/seed/rrr/400/600",
+    "description": "A fearless revolutionary and an officer in the British force, who once shared a deep bond, decide to join forces and chart out an inspirational path of freedom against the despotic rulers.",
+    "cast": ["N.T. Rama Rao Jr.", "Ram Charan", "Alia Bhatt", "Ajay Devgn"],
+    "trailer": "https://www.youtube.com/embed/f_vbAtFSEc0",
+    "showtimes": ["2026-02-08T15:00", "2026-02-08T18:30", "2026-02-08T21:30"]
+  },
+  {
+    "id": "4",
+    "title": "Pushpa: The Rise",
+    "genre": "Action/Crime",
+    "duration": "2h 59m",
+    "rating": "7.6",
+    "poster": "https://picsum.photos/seed/pushpa/400/600",
+    "description": "A laborer named Pushpa makes enemies as he rises in the world of red sandalwood smuggling.",
+    "cast": ["Allu Arjun", "Fahadh Faasil", "Rashmika Mandanna"],
+    "trailer": "https://www.youtube.com/embed/pKctjlxbFDQ",
+    "showtimes": ["2026-02-08T14:30", "2026-02-08T17:45", "2026-02-08T20:45"]
+  },
+  {
+    "id": "5",
+    "title": "Vikram",
+    "genre": "Action/Thriller",
+    "duration": "2h 54m",
+    "rating": "8.3",
+    "poster": "https://picsum.photos/seed/vikram/400/600",
+    "description": "Members of a black ops team must track and eliminate a gang of masked murderers.",
+    "cast": ["Kamal Haasan", "Vijay Sethupathi", "Fahadh Faasil"],
+    "trailer": "https://www.youtube.com/embed/OKBMCL-frPU",
+    "showtimes": ["2026-02-08T13:30", "2026-02-08T16:45", "2026-02-08T19:45"]
+  }
+]

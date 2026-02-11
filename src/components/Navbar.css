@@ -17,17 +17,6 @@
   align-items: center;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-}
-
 .navbar-logo {
   font-size: 28px;
   font-weight: bold;
@@ -40,55 +29,48 @@
   transform: scale(1.05);
 }
 
-.navbar-search {
+.search-form {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
-  padding: 8px 15px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
-.navbar-search:focus-within {
+.search-form:focus-within {
   background: rgba(255, 255, 255, 0.15);
   border-color: #e94560;
-  box-shadow: 0 0 15px rgba(233, 69, 96, 0.3);
 }
 
 .search-input {
-  background: transparent;
+  background: none;
   border: none;
-  outline: none;
   color: #fff;
   font-size: 14px;
+  outline: none;
   width: 200px;
-  transition: width 0.3s ease;
+  padding: 0;
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.search-input:focus {
-  width: 250px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .search-btn {
-  background: transparent;
+  background: none;
   border: none;
-  color: #fff;
-  font-size: 18px;
+  color: #e94560;
+  font-size: 16px;
   cursor: pointer;
+  transition: color 0.3s ease;
   padding: 0;
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s ease;
 }
 
 .search-btn:hover {
-  transform: scale(1.1);
+  color: #ff6b6b;
 }
 
 .navbar-menu {
@@ -123,205 +105,6 @@
 
 .navbar-menu li a:hover {
   color: #e94560;
-}
-
-/* Releases link special styling */
-.navbar-menu li a[href="/releases"] {
-  color: #ffd700;
-  font-weight: 600;
-}
-
-.navbar-menu li a[href="/releases"]::after {
-  background: #ffd700;
-}
-
-.navbar-menu li a[href="/releases"]:hover {
-  color: #ffed4e;
-}
-
-/* Theatres link special styling */
-.navbar-menu li a[href="/theatres"] {
-  color: #00b894;
-  font-weight: 600;
-}
-
-.navbar-menu li a[href="/theatres"]::after {
-  background: #00b894;
-}
-
-.navbar-menu li a[href="/theatres"]:hover {
-  color: #00cec9;
-}
-
-/* Download Tickets Dropdown */
-.download-tickets-dropdown {
-  position: relative;
-}
-
-.download-tickets-btn {
-  background: rgba(0, 184, 148, 0.1);
-  color: #00b894;
-  border: 2px solid #00b894;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-.download-tickets-btn:hover {
-  background: rgba(0, 184, 148, 0.2);
-  transform: translateY(-2px);
-}
-
-.download-tickets-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: rgba(0, 0, 0, 0.95);
-  border: 2px solid #00b894;
-  border-radius: 12px;
-  min-width: 400px;
-  max-height: 500px;
-  overflow-y: auto;
-  z-index: 1000;
-  margin-top: 10px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.download-tickets-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid rgba(0, 184, 148, 0.2);
-  background: rgba(0, 184, 148, 0.05);
-  border-radius: 10px 10px 0 0;
-}
-
-.download-tickets-header h4 {
-  color: #00b894;
-  font-size: 16px;
-  margin: 0;
-}
-
-.download-tickets-list {
-  padding: 10px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.download-ticket-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(0, 184, 148, 0.1);
-  transition: all 0.3s ease;
-}
-
-.download-ticket-item:hover {
-  background: rgba(0, 184, 148, 0.1);
-  border-color: #00b894;
-}
-
-.ticket-info {
-  flex: 1;
-}
-
-.ticket-movie {
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.ticket-details {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  margin-bottom: 3px;
-}
-
-.ticket-seats {
-  color: #00b894;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.ticket-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.download-btn {
-  background: rgba(0, 184, 148, 0.2);
-  color: #00b894;
-  border: 1px solid #00b894;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.download-btn:hover {
-  background: #00b894;
-  color: #fff;
-}
-
-.view-btn {
-  background: rgba(233, 69, 96, 0.2);
-  color: #e94560;
-  border: 1px solid #e94560;
-  padding: 6px 12px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.view-btn:hover {
-  background: #e94560;
-  color: #fff;
-}
-
-.no-bookings-message {
-  text-align: center;
-  padding: 30px 20px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.no-bookings-message p {
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-
-.no-bookings-message a {
-  color: #00b894;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 8px 16px;
-  border: 1px solid #00b894;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.no-bookings-message a:hover {
-  background: #00b894;
-  color: #fff;
 }
 
 .offers-dropdown {
@@ -495,193 +278,7 @@
   transform: translateY(-2px);
 }
 
-/* Existing mobile styles are now integrated above */
-
-/* Profile Dropdown Styles */
-.profile-dropdown {
-  position: relative;
-}
-
-.profile-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(233, 69, 96, 0.5);
-  border-radius: 25px;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.3s ease;
-  color: #fff;
-  font-weight: 500;
-}
-
-.profile-btn:hover {
-  background: rgba(233, 69, 96, 0.2);
-  border-color: #e94560;
-  transform: translateY(-2px);
-}
-
-.profile-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e94560, #ff6b6b);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.profile-name {
-  font-size: 14px;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dropdown-arrow {
-  font-size: 10px;
-  transition: transform 0.3s ease;
-}
-
-.profile-btn:hover .dropdown-arrow {
-  transform: rotate(180deg);
-}
-
-.profile-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: rgba(0, 0, 0, 0.95);
-  border: 2px solid #e94560;
-  border-radius: 12px;
-  min-width: 280px;
-  z-index: 1000;
-  margin-top: 10px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 20px;
-  border-bottom: 1px solid rgba(233, 69, 96, 0.2);
-  background: rgba(233, 69, 96, 0.05);
-  border-radius: 10px 10px 0 0;
-  position: relative;
-}
-
-.profile-avatar-large {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e94560, #ff6b6b);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: bold;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.profile-info {
-  flex: 1;
-}
-
-.profile-info h4 {
-  color: #fff;
-  font-size: 16px;
-  margin: 0 0 4px 0;
-  font-weight: 600;
-}
-
-.profile-info p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 13px;
-  margin: 0 0 6px 0;
-}
-
-.profile-role {
-  background: rgba(233, 69, 96, 0.2);
-  color: #e94560;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.profile-actions {
-  padding: 10px 0;
-}
-
-.profile-action {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-}
-
-.profile-action:hover {
-  background: rgba(233, 69, 96, 0.1);
-  color: #fff;
-  padding-left: 25px;
-}
-
-.logout-action {
-  border-top: 1px solid rgba(233, 69, 96, 0.2);
-  margin-top: 5px;
-  color: #ff6b6b;
-}
-
-.logout-action:hover {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
-}
-
-/* Mobile Responsive Updates */
 @media (max-width: 768px) {
-  .navbar-left {
-    gap: 15px;
-  }
-  
-  .navbar-container {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .navbar-search {
-    order: 3;
-    width: 100%;
-    padding: 6px 12px;
-  }
-
-  .search-input {
-    width: 100%;
-    font-size: 13px;
-  }
-
-  .search-input:focus {
-    width: 100%;
-  }
-
   .navbar-menu {
     gap: 15px;
     font-size: 14px;
@@ -705,75 +302,5 @@
     width: 20px;
     height: 20px;
     font-size: 10px;
-  }
-
-  .download-tickets-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .download-tickets-menu {
-    min-width: 350px;
-    right: -30px;
-  }
-
-  .download-ticket-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .ticket-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .profile-btn {
-    padding: 6px 12px;
-    gap: 8px;
-  }
-
-  .profile-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .profile-name {
-    font-size: 12px;
-    max-width: 80px;
-  }
-
-  .profile-menu {
-    min-width: 250px;
-    right: -20px;
-  }
-
-  .profile-header {
-    padding: 15px;
-    gap: 12px;
-  }
-
-  .profile-avatar-large {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .profile-info h4 {
-    font-size: 14px;
-  }
-
-  .profile-info p {
-    font-size: 12px;
-  }
-
-  .profile-action {
-    padding: 10px 15px;
-    font-size: 13px;
-  }
-
-  .profile-action:hover {
-    padding-left: 20px;
   }
 }

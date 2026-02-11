@@ -1,138 +1,117 @@
-// API utility for future backend integration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
-class ApiService {
-  static async request(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
-    };
+// Helper function for API calls
+const apiCall = async (endpoint, options = {}) => {
+  const token = localStorage.getItem('token') || localStorage.getItem('adminToken');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers
+  };
 
-    // Add auth token if available
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    try {
-      const response = await fetch(url, config);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('API request failed:', error);
-      throw error;
-    }
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
-  // Movies API
-  static async getMovies() {
-    return this.request('/movies');
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...options,
+    headers
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'API call failed');
   }
 
-  static async getMovie(id) {
-    return this.request(`/movies/${id}`);
-  }
+  return response.json();
+};
 
-  static async createMovie(movieData) {
-    return this.request('/movies', {
-      method: 'POST',
-      body: JSON.stringify(movieData),
-    });
-  }
+// Auth APIs
+export const registerUser = (userData) =>
+  apiCall('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(userData)
+  });
 
-  static async updateMovie(id, movieData) {
-    return this.request(`/movies/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(movieData),
-    });
-  }
+export const loginUser = (email, password) =>
+  apiCall('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
+  });
 
-  static async deleteMovie(id) {
-    return this.request(`/movies/${id}`, {
-      method: 'DELETE',
-    });
-  }
+export const loginAdmin = (username, password) =>
+  apiCall('/admin/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password })
+  });
 
-  // Bookings API
-  static async createBooking(bookingData) {
-    return this.request('/bookings', {
-      method: 'POST',
-      body: JSON.stringify(bookingData),
-    });
-  }
+// Movie APIs
+export const getMovies = () => apiCall('/movies');
 
-  static async getUserBookings(userId) {
-    return this.request(`/bookings/user/${userId}`);
-  }
+export const getMovieById = (id) => apiCall(`/movies/${id}`);
 
-  static async getAllBookings() {
-    return this.request('/bookings');
-  }
+// Booking APIs
+export const createBooking = (bookingData) =>
+  apiCall('/bookings', {
+    method: 'POST',
+    body: JSON.stringify(bookingData)
+  });
 
-  static async getBookedSeats(movieId, showTime) {
-    return this.request(`/bookings/seats/${movieId}/${showTime}`);
-  }
+export const getUserBookings = (userId) =>
+  apiCall(`/bookings/user/${userId}`);
 
-  static async cancelBooking(bookingId) {
-    return this.request(`/bookings/${bookingId}`, {
-      method: 'DELETE',
-    });
-  }
+export const getBookedSeats = (movieId, showTime, showDate) =>
+  apiCall(`/bookings/seats/${movieId}/${showTime}${showDate ? `/${showDate}` : ''}`);
 
-  // Auth API
-  static async login(credentials) {
-    return this.request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
-  }
+export const cancelBooking = (bookingId) =>
+  apiCall(`/bookings/${bookingId}`, {
+    method: 'DELETE'
+  });
 
-  static async register(userData) {
-    return this.request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-  }
+// Coupon APIs
+export const validateCoupon = (code) =>
+  apiCall('/coupons/validate', {
+    method: 'POST',
+    body: JSON.stringify({ code })
+  });
 
-  static async adminLogin(credentials) {
-    return this.request('/auth/admin-login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
-  }
+// Admin APIs
+export const getAdminMovies = () => apiCall('/admin/movies');
 
-  // Coupons API
-  static async getCoupons() {
-    return this.request('/coupons');
-  }
+export const addAdminMovie = (movieData) =>
+  apiCall('/admin/movies', {
+    method: 'POST',
+    body: JSON.stringify(movieData)
+  });
 
-  static async createCoupon(couponData) {
-    return this.request('/coupons', {
-      method: 'POST',
-      body: JSON.stringify(couponData),
-    });
-  }
+export const updateAdminMovie = (id, movieData) =>
+  apiCall(`/admin/movies/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(movieData)
+  });
 
-  static async validateCoupon(code) {
-    return this.request('/coupons/validate', {
-      method: 'POST',
-      body: JSON.stringify({ code }),
-    });
-  }
+export const deleteAdminMovie = (id) =>
+  apiCall(`/admin/movies/${id}`, {
+    method: 'DELETE'
+  });
 
-  static async deleteCoupon(id) {
-    return this.request(`/coupons/${id}`, {
-      method: 'DELETE',
-    });
-  }
-}
+export const getAdminUsers = () => apiCall('/admin/users');
 
-export default ApiService;
+export const getAdminBookings = () => apiCall('/admin/bookings');
+
+export const cancelAdminBooking = (id) =>
+  apiCall(`/admin/bookings/${id}`, {
+    method: 'DELETE'
+  });
+
+export const getAdminCoupons = () => apiCall('/admin/coupons');
+
+export const addAdminCoupon = (couponData) =>
+  apiCall('/admin/coupons', {
+    method: 'POST',
+    body: JSON.stringify(couponData)
+  });
+
+export const deleteAdminCoupon = (id) =>
+  apiCall(`/admin/coupons/${id}`, {
+    method: 'DELETE'
+  });

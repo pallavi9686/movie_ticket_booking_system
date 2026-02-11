@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginAdmin } from '../utils/storage';
+import { loginAdmin } from '../utils/api';
 import './Auth.css';
 
 const AdminLogin = () => {
-  const [formData, setFormData] = useState({ id: '', password: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = loginAdmin(formData.id, formData.password);
+    setError('');
+    setLoading(true);
     
-    if (result.success) {
-      navigate('/admin');
-      window.location.reload();
-    } else {
-      setError(result.message);
+    try {
+      const result = await loginAdmin(formData.username, formData.password);
+      localStorage.setItem('adminToken', result.token);
+      localStorage.setItem('currentAdmin', JSON.stringify(result.admin));
+      window.location.href = '/admin';
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,13 +39,13 @@ const AdminLogin = () => {
           {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Admin ID</label>
+              <label>Username</label>
               <input
                 type="text"
-                name="id"
-                value={formData.id}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
-                placeholder="Enter admin ID"
+                placeholder="Enter admin username"
                 required
               />
             </div>
@@ -54,7 +60,9 @@ const AdminLogin = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">Login as Admin</button>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login as Admin'}
+            </button>
           </form>
         </div>
       </div>

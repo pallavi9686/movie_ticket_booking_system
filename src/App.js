@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
-import Theatres from './pages/Theatres';
 import MovieDetails from './pages/MovieDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -11,7 +10,6 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import MyBookings from './pages/MyBookings';
 import BookingDetails from './pages/BookingDetails';
-import Releases from './pages/Releases';
 import { initializeApp } from './utils/storage';
 import './App.css';
 
@@ -27,8 +25,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
-          <Route path="/theatres" element={<Theatres />} />
-          <Route path="/releases" element={<Releases />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
