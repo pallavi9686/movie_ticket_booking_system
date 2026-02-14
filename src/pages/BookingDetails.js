@@ -114,11 +114,11 @@ const BookingDetails = () => {
               <h3>Payment Summary</h3>
               <div className="summary-row">
                 <span>Total Amount:</span>
-                <span>${parseFloat(booking.total_price).toFixed(2)}</span>
+                <span>₹{parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
               <div className="summary-row total-row">
                 <span>Amount Paid:</span>
-                <span>${parseFloat(booking.total_price).toFixed(2)}</span>
+                <span>₹{parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
             </div>
           </div>

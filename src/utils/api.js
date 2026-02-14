@@ -115,3 +115,18 @@ export const deleteAdminCoupon = (id) =>
   apiCall(`/admin/coupons/${id}`, {
     method: 'DELETE'
   });
+
+// Review APIs
+export const getMovieReviews = (movieId) =>
+  apiCall(`/reviews/movie/${movieId}`);
+
+export const addReview = (reviewData) =>
+  apiCall('/reviews', {
+    method: 'POST',
+    body: JSON.stringify(reviewData)
+  });
+
+export const deleteReview = (id) =>
+  apiCall(`/reviews/${id}`, {
+    method: 'DELETE'
+  });

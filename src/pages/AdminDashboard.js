@@ -27,7 +27,6 @@ const AdminDashboard = () => {
     poster: '',
     genre: '',
     duration: '',
-    rating: '',
     price: '',
     description: ''
   });
@@ -91,7 +90,6 @@ const AdminDashboard = () => {
         poster: '',
         genre: '',
         duration: '',
-        rating: '',
         price: '',
         description: ''
       });
@@ -109,7 +107,6 @@ const AdminDashboard = () => {
       poster: movie.poster,
       genre: movie.genre,
       duration: movie.duration,
-      rating: movie.rating,
       price: movie.price || '',
       description: movie.description
     });
@@ -273,24 +270,13 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Rating</label>
-                  <input
-                    type="text"
-                    name="rating"
-                    value={movieForm.rating}
-                    onChange={handleMovieFormChange}
-                    placeholder="e.g., 8.5"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Base Price ($)</label>
+                  <label>Base Price (₹)</label>
                   <input
                     type="number"
                     name="price"
                     value={movieForm.price}
                     onChange={handleMovieFormChange}
-                    placeholder="e.g., 15"
+                    placeholder="e.g., 250"
                     min="0"
                     step="0.01"
                     required
@@ -322,7 +308,6 @@ const AdminDashboard = () => {
                       poster: '',
                       genre: '',
                       duration: '',
-                      rating: '',
                       price: '',
                       description: ''
                     });
@@ -343,8 +328,7 @@ const AdminDashboard = () => {
                     <h3>{movie.title}</h3>
                     <p>Genre: {movie.genre}</p>
                     <p>Duration: {movie.duration}</p>
-                    <p>Rating: ⭐ {movie.rating}</p>
-                    <p>Price: ${movie.price}/seat</p>
+                    <p>Price: ₹{movie.price}/seat</p>
                     <div className="admin-movie-actions">
                       <button
                         onClick={() => handleEditMovie(movie)}
@@ -426,7 +410,7 @@ const AdminDashboard = () => {
                         <td>{booking.movie_title}</td>
                         <td>{booking.show_time}</td>
                         <td>{booking.seats.join(', ')}</td>
-                        <td>${booking.total_price ? parseFloat(booking.total_price).toFixed(2) : 'N/A'}</td>
+                        <td>₹{booking.total_price ? parseFloat(booking.total_price).toFixed(2) : 'N/A'}</td>
                         <td>{new Date(booking.booking_date).toLocaleDateString()}</td>
                         <td>
                           <button
