@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { registerUser } from '../utils/api';
+import './Auth.css';
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phone: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone
+      });
+      navigate('/login');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-card">
+          <h2>User Registration</h2>
+          {error && <div className="error-message">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone (Optional)</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+          </form>
+          <p className="auth-link">
+            Already have an account? <Link to="/login">Login here</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
