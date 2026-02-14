@@ -1,8 +1,34 @@
 const express = require('express');
 const pool = require('../config/database');
 const { verifyToken } = require('../middleware/auth');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
+
+// Fallback movies data
+const getFallbackMovies = () => {
+  try {
+    const moviesPath = path.join(__dirname, '../../src/data/movies.json');
+    const moviesData = fs.readFileSync(moviesPath, 'utf8');
+    const movies = JSON.parse(moviesData);
+    
+    return movies.map(movie => ({
+      id: parseInt(movie.id),
+      title: movie.title,
+      poster: movie.poster,
+      genre: movie.genre,
+      duration: movie.duration,
+      rating: parseFloat(movie.rating),
+      price: 15.00,
+      description: movie.description,
+      showTimings: movie.showtimes || ['10:00 AM', '2:00 PM', '6:00 PM', '9:30 PM']
+    }));
+  } catch (err) {
+    console.error('Error reading fallback movies:', err);
+    return [];
+  }
+};
 
 // Get all movies (no auth needed)
 router.get('/', async (req, res) => {
@@ -22,8 +48,9 @@ router.get('/', async (req, res) => {
     connection.release();
     res.json(movies);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch movies' });
+    console.error('Database error, using fallback data:', error.message);
+    const fallbackMovies = getFallbackMovies();
+    res.json(fallbackMovies);
   }
 });
 
@@ -59,8 +86,8 @@ router.post('/', verifyToken, async (req, res) => {
     connection.release();
     res.status(201).json({ id: movieId, message: 'Movie added successfully with show timings' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to add movie' });
+    console.error('Database error:', error.message);
+    res.status(503).json({ error: 'Database not available. Cannot add movies without database.' });
   }
 });
 

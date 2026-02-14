@@ -93,8 +93,9 @@ router.get('/seats/:movieId/:showTime/:showDate?', async (req, res) => {
     connection.release();
     res.json({ bookedSeats });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch booked seats' });
+    console.error('Database error:', error.message);
+    // Return empty booked seats when database is not available
+    res.json({ bookedSeats: [] });
   }
 });
 

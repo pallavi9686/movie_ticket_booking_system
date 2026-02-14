@@ -4,16 +4,17 @@ const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Get all coupons
-router.get('/', verifyToken, async (req, res) => {
+// Get all coupons (public endpoint for displaying offers)
+router.get('/', async (req, res) => {
   try {
     const connection = await pool.getConnection();
-    const [coupons] = await connection.query('SELECT * FROM coupons');
+    const [coupons] = await connection.query('SELECT * FROM coupons WHERE active = TRUE');
     connection.release();
     res.json(coupons);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch coupons' });
+    console.error('Database error:', error.message);
+    // Return empty array when database is not available
+    res.json([]);
   }
 });
 
@@ -35,8 +36,8 @@ router.post('/', verifyToken, async (req, res) => {
 
     res.status(201).json({ id: result.insertId, message: 'Coupon created successfully' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create coupon' });
+    console.error('Database error:', error.message);
+    res.status(503).json({ error: 'Database not available. Cannot create coupons without database.' });
   }
 });
 
@@ -50,8 +51,8 @@ router.delete('/:id', verifyToken, async (req, res) => {
 
     res.json({ message: 'Coupon deleted successfully' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to delete coupon' });
+    console.error('Database error:', error.message);
+    res.status(503).json({ error: 'Database not available. Cannot delete coupons without database.' });
   }
 });
 

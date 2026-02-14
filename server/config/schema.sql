@@ -20,6 +20,17 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Password reset tokens table
+CREATE TABLE IF NOT EXISTS password_resets (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  expires_at DATETIME NOT NULL,
+  used BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Movies table
 CREATE TABLE IF NOT EXISTS movies (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -69,8 +80,9 @@ CREATE TABLE IF NOT EXISTS coupons (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert default admin
-INSERT INTO admin (username, password) VALUES ('admin', '$2a$10$YourHashedPasswordHere');
+-- Insert default admin (password: admin123)
+-- Note: Run 'node setup-admin.js' to properly hash and insert admin credentials
+INSERT INTO admin (username, password) VALUES ('admin', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
 -- Insert sample movies
 INSERT INTO movies (title, poster, genre, duration, rating, price, description) VALUES

@@ -1,7 +1,34 @@
 const express = require('express');
 const pool = require('../config/database');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
+
+// Fallback movies data
+const getFallbackMovies = () => {
+  try {
+    const moviesPath = path.join(__dirname, '../../src/data/movies.json');
+    const moviesData = fs.readFileSync(moviesPath, 'utf8');
+    const movies = JSON.parse(moviesData);
+    
+    // Transform to match expected format
+    return movies.map(movie => ({
+      id: parseInt(movie.id),
+      title: movie.title,
+      poster: movie.poster,
+      genre: movie.genre,
+      duration: movie.duration,
+      rating: parseFloat(movie.rating),
+      price: 15.00,
+      description: movie.description,
+      showTimings: movie.showtimes || ['10:00 AM', '2:00 PM', '6:00 PM', '9:30 PM']
+    }));
+  } catch (err) {
+    console.error('Error reading fallback movies:', err);
+    return [];
+  }
+};
 
 // Get all movies
 router.get('/', async (req, res) => {
@@ -21,8 +48,10 @@ router.get('/', async (req, res) => {
     connection.release();
     res.json(movies);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch movies' });
+    console.error('Database error, using fallback data:', error.message);
+    // Use fallback data when database is not available
+    const fallbackMovies = getFallbackMovies();
+    res.json(fallbackMovies);
   }
 });
 
@@ -49,8 +78,16 @@ router.get('/:id', async (req, res) => {
     connection.release();
     res.json(movie);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch movie' });
+    console.error('Database error, using fallback data:', error.message);
+    // Use fallback data when database is not available
+    const fallbackMovies = getFallbackMovies();
+    const movie = fallbackMovies.find(m => m.id === parseInt(id));
+    
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+    
+    res.json(movie);
   }
 });
 

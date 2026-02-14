@@ -1,0 +1,168 @@
+.theaters-page {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.theaters-header {
+  text-align: center;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.theaters-header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theaters-header p {
+  font-size: 1.2rem;
+  color: #a8a8a8;
+}
+
+.city-filter {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.city-filter label {
+  color: white;
+  font-size: 1.1rem;
+  margin-right: 15px;
+  font-weight: 500;
+}
+
+.city-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.city-btn {
+  padding: 10px 25px;
+  border: 2px solid #ff6b6b;
+  background: transparent;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.city-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+  transform: translateY(-2px);
+}
+
+.city-btn.active {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.theaters-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.theater-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.theater-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+  border-color: rgba(255, 107, 107, 0.5);
+}
+
+.theater-icon {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.theater-info h2 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.theater-location,
+.theater-screens {
+  color: #a8a8a8;
+  font-size: 1rem;
+  margin: 8px 0;
+}
+
+.theater-rating {
+  color: #ffd93d;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+.theater-facilities {
+  margin-top: 20px;
+}
+
+.theater-facilities h4 {
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.facilities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.facility-tag {
+  background: linear-gradient(45deg, rgba(255, 107, 107, 0.2), rgba(255, 217, 61, 0.2));
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.no-theaters {
+  text-align: center;
+  color: #a8a8a8;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+  .theaters-header h1 {
+    font-size: 2rem;
+  }
+
+  .theaters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .city-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .city-btn {
+    width: 200px;
+  }
+}

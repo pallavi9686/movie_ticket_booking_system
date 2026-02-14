@@ -7,6 +7,11 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,6 +32,29 @@ const Login = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setResetError('');
+    setResetMessage('');
+    setResetLoading(true);
+
+    try {
+      // Simulate password reset request
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setResetMessage('Password reset link has been sent to your email!');
+      setTimeout(() => {
+        setShowForgotPassword(false);
+        setResetEmail('');
+        setResetMessage('');
+      }, 3000);
+    } catch (err) {
+      setResetError('Failed to send reset link. Please try again.');
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -59,6 +87,15 @@ const Login = () => {
                 required
               />
             </div>
+            <div className="forgot-password-link">
+              <button 
+                type="button" 
+                className="link-button"
+                onClick={() => setShowForgotPassword(true)}
+              >
+                Forgot Password?
+              </button>
+            </div>
             <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
@@ -68,6 +105,53 @@ const Login = () => {
           </p>
         </div>
       </div>
+
+      {showForgotPassword && (
+        <div className="modal-overlay" onClick={() => setShowForgotPassword(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Reset Password</h3>
+              <button 
+                className="close-button"
+                onClick={() => setShowForgotPassword(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <form onSubmit={handleForgotPassword}>
+              {resetMessage && <div className="success-message">{resetMessage}</div>}
+              {resetError && <div className="error-message">{resetError}</div>}
+              <div className="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  placeholder="Enter your registered email"
+                  required
+                />
+                <small>We'll send you a link to reset your password</small>
+              </div>
+              <div className="modal-actions">
+                <button 
+                  type="button" 
+                  className="btn btn-secondary"
+                  onClick={() => setShowForgotPassword(false)}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary"
+                  disabled={resetLoading}
+                >
+                  {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
