@@ -81,9 +81,12 @@ const MyBookings = () => {
                   <h3>{booking.movie?.title || 'Movie'}</h3>
                   <p><strong>Show Date:</strong> {booking.show_date ? new Date(booking.show_date).toLocaleDateString() : 'N/A'}</p>
                   <p><strong>Show Time:</strong> {booking.show_time}</p>
+                  {booking.theaterName && (
+                    <p><strong>Theater:</strong> 🎭 {booking.theaterName} - {booking.theaterLocation}</p>
+                  )}
                   <p><strong>Seats:</strong> {booking.seats.join(', ')}</p>
                   {booking.total_price && (
-                    <p className="booking-price"><strong>Total Paid:</strong> ${parseFloat(booking.total_price).toFixed(2)}</p>
+                    <p className="booking-price"><strong>Total Paid:</strong> ₹{parseFloat(booking.total_price).toFixed(2)}</p>
                   )}
                   <p><strong>Booking Date:</strong> {new Date(booking.booking_date).toLocaleDateString()}</p>
                   <div className="booking-actions">

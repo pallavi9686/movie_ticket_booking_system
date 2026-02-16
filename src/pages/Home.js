@@ -219,50 +219,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-section">
-              <h3>🎬 CineBook</h3>
-              <p>Your trusted movie booking partner since 2024</p>
-              <div className="social-links">
-                <a href="#facebook">f</a>
-                <a href="#twitter">𝕏</a>
-                <a href="#instagram">📷</a>
-              </div>
-            </div>
-            <div className="footer-section">
-              <h4>Quick Links</h4>
-              <ul>
-                <li><Link to="/movies">Browse Movies</Link></li>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/register">Register</Link></li>
-                <li><Link to="/admin-login">Admin</Link></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h4>Support</h4>
-              <ul>
-                <li><a href="#help">Help Center</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-                <li><a href="#privacy">Privacy Policy</a></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h4>Contact</h4>
-              <p>📧 support@cinebook.com</p>
-              <p>📞 +1 (555) 123-4567</p>
-              <p>🕐 24/7 Customer Support</p>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2026 CineBook. All rights reserved. | Made with ❤️ for movie lovers</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

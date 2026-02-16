@@ -385,3 +385,322 @@
     flex-direction: column;
   }
 }
+
+/* Reviews Section */
+.reviews-section {
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.reviews-header h2 {
+  font-size: 32px;
+  color: #e94560;
+}
+
+.review-form {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 40px;
+}
+
+.rating-input {
+  margin-bottom: 20px;
+}
+
+.rating-input label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.stars {
+  display: flex;
+  gap: 5px;
+  font-size: 32px;
+}
+
+.star {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.star:hover,
+.star.filled {
+  color: #ffd700;
+}
+
+.review-form textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.review-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.review-user strong {
+  display: block;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.review-rating {
+  color: #ffd700;
+  font-size: 18px;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.review-date {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-delete-review {
+  padding: 6px 12px;
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid #dc3545;
+  border-radius: 6px;
+  color: #dc3545;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-delete-review:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+.review-comment {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.no-reviews {
+  text-align: center;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .reviews-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .reviews-header h2 {
+    font-size: 24px;
+  }
+  
+  .review-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .review-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+.pricing-breakdown {
+  margin: 15px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.price-info-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.price-info-item.discount {
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #4caf50;
+}
+
+.price-info-item.standard {
+  background: rgba(255, 193, 7, 0.2);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  color: #ffc107;
+}
+
+.price-info-item.premium {
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: #ff6b6b;
+}
+
+.price-info-item span {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .pricing-breakdown {
+    padding: 10px;
+  }
+  
+  .price-info-item {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+.theater-selection {
+  margin: 30px 0;
+}
+
+.theater-selection h3 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.theaters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.theater-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.theater-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 107, 107, 0.5);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+}
+
+.theater-card.selected {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+}
+
+.theater-card.selected .theater-icon {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.theater-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.theater-info h4 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.theater-location {
+  color: #a8a8a8;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.theater-facilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.facility-badge {
+  background: linear-gradient(45deg, rgba(255, 107, 107, 0.2), rgba(255, 217, 61, 0.2));
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.facility-badge.more {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .theaters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .theater-card {
+    padding: 15px;
+  }
+  
+  .theater-icon {
+    font-size: 2.5rem;
+  }
+  
+  .theater-info h4 {
+    font-size: 1.1rem;
+  }
+}

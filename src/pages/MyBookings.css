@@ -1,17 +1,51 @@
 .my-bookings-page {
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 100px 20px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.my-bookings-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 217, 61, 0.1) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
 .no-bookings {
   text-align: center;
-  padding: 60px 20px;
+  padding: 100px 20px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .no-bookings p {
-  font-size: 20px;
+  font-size: 22px;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  line-height: 1.6;
 }
 
 .bookings-grid {
@@ -22,48 +56,96 @@
 
 .booking-card {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.booking-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 217, 61, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .booking-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(255, 107, 107, 0.4);
+  border-color: rgba(255, 107, 107, 0.6);
+}
+
+.booking-card:hover::before {
+  opacity: 1;
 }
 
 .booking-poster {
   width: 100%;
-  height: 250px;
+  height: 280px;
   object-fit: cover;
+  transition: transform 0.5s ease;
+  filter: brightness(0.9);
+}
+
+.booking-card:hover .booking-poster {
+  transform: scale(1.1);
+  filter: brightness(1.1);
 }
 
 .booking-info {
-  padding: 20px;
+  padding: 25px;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .booking-info h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #e94560;
+  font-size: 24px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
 }
 
 .booking-info p {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: rgba(255, 255, 255, 0.8);
   font-size: 15px;
+  line-height: 1.6;
 }
 
 .booking-info strong {
-  color: #fff;
+  color: #ffd93d;
+  font-weight: 600;
 }
 
 .booking-info .booking-price {
-  color: #ffd700;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 12px 0;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 15px 0;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  background-color: rgba(255, 107, 107, 0.1);
+  background-clip: padding-box, text;
 }
 
 .booking-info .coupon-badge {
@@ -95,4 +177,35 @@
   .bookings-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.page-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff6b6b);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }

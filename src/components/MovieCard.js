@@ -20,7 +20,7 @@ const MovieCard = ({ movie }) => {
           <span className="duration">🕐 {movie.duration}</span>
         </div>
         <p className="genre">{movie.genre}</p>
-        <p className="price">💵 From ${movie.price}/seat</p>
+        <p className="price">💰 From ₹{movie.price}/seat</p>
       </div>
     </div>
   );

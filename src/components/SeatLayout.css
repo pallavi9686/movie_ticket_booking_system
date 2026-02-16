@@ -164,3 +164,153 @@
     gap: 5px;
   }
 }
+.pricing-tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-tier {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.tier-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tier-actual-price {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.pricing-tier.clickable {
+  cursor: pointer;
+  transform: scale(1);
+}
+
+.pricing-tier.clickable:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.pricing-tier.clickable:active {
+  transform: scale(0.98);
+}
+
+.pricing-tier.front-seats {
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.pricing-tier.front-seats.clickable:hover {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: rgba(76, 175, 80, 0.6);
+}
+
+.pricing-tier.middle-seats {
+  background: rgba(255, 193, 7, 0.2);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.pricing-tier.middle-seats.clickable:hover {
+  background: rgba(255, 193, 7, 0.3);
+  border-color: rgba(255, 193, 7, 0.6);
+}
+
+.pricing-tier.back-seats {
+  background: rgba(255, 107, 107, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+}
+
+.pricing-tier.back-seats.clickable:hover {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: rgba(255, 107, 107, 0.6);
+}
+
+.tier-label {
+  color: white;
+  font-weight: 500;
+}
+
+.tier-discount {
+  background: linear-gradient(45deg, #4caf50, #66bb6a);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.tier-price {
+  color: #ffc107;
+  font-weight: 500;
+}
+
+.tier-premium {
+  background: linear-gradient(45deg, #ff6b6b, #ff8a80);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .pricing-tiers {
+    gap: 8px;
+  }
+  
+  .pricing-tier {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .tier-discount,
+  .tier-premium {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
+.quick-select-info {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.quick-select-info p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  margin: 0;
+  font-style: italic;
+}
+
+.tier-discount,
+.tier-premium {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  }
+}
+
+.pricing-tier.clickable .tier-discount:hover,
+.pricing-tier.clickable .tier-premium:hover {
+  animation: none;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}

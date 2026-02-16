@@ -62,6 +62,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   show_time VARCHAR(20) NOT NULL,
   seats JSON NOT NULL,
   total_price DECIMAL(10,2) NOT NULL,
+  theater_id INT,
+  theater_name VARCHAR(200),
+  theater_location VARCHAR(300),
   booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE

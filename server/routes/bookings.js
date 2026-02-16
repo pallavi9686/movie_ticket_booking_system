@@ -7,7 +7,7 @@ const router = express.Router();
 // Create booking
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { movieId, showDate, showTime, seats, totalPrice } = req.body;
+    const { movieId, showDate, showTime, seats, totalPrice, theaterId, theaterName, theaterLocation } = req.body;
     const userId = req.userId;
 
     if (!movieId || !showDate || !showTime || !seats || !totalPrice) {
@@ -33,8 +33,8 @@ router.post('/', verifyToken, async (req, res) => {
 
     // Create booking
     await connection.query(
-      'INSERT INTO bookings (user_id, movie_id, show_date, show_time, seats, total_price) VALUES (?, ?, ?, ?, ?, ?)',
-      [userId, movieId, showDate, showTime, JSON.stringify(seats), totalPrice]
+      'INSERT INTO bookings (user_id, movie_id, show_date, show_time, seats, total_price, theater_id, theater_name, theater_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [userId, movieId, showDate, showTime, JSON.stringify(seats), totalPrice, theaterId, theaterName, theaterLocation]
     );
 
     connection.release();
