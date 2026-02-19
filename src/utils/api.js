@@ -1,28 +1,38 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5003/api';
 
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {
-  const token = localStorage.getItem('token') || localStorage.getItem('adminToken');
-  const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers
-  };
+  try {
+    const token = localStorage.getItem('token') || localStorage.getItem('adminToken');
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'API call failed');
+    }
+
+    return response.json();
+  } catch (error) {
+    // Check if it's a network error (server not running)
+    if (error.message === 'Failed to fetch' || error.message.includes('fetch')) {
+      console.error('❌ Server not available. Please start the backend server.');
+      throw new Error('Server not available. Please start the backend server.');
+    }
+    // Otherwise, it's an API error - throw the actual error message
+    throw error;
   }
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'API call failed');
-  }
-
-  return response.json();
 };
 
 // Auth APIs
@@ -68,6 +78,8 @@ export const cancelBooking = (bookingId) =>
   });
 
 // Coupon APIs
+export const getCoupons = () => apiCall('/admin/coupons');
+
 export const validateCoupon = (code) =>
   apiCall('/coupons/validate', {
     method: 'POST',
@@ -116,17 +128,19 @@ export const deleteAdminCoupon = (id) =>
     method: 'DELETE'
   });
 
-// Review APIs
-export const getMovieReviews = (movieId) =>
-  apiCall(`/reviews/movie/${movieId}`);
 
-export const addReview = (reviewData) =>
-  apiCall('/reviews', {
-    method: 'POST',
-    body: JSON.stringify(reviewData)
-  });
+// Review APIs (placeholder - not implemented in backend yet)
+export const getMovieReviews = (movieId) => {
+  // Return empty array for now since reviews aren't implemented
+  return Promise.resolve([]);
+};
 
-export const deleteReview = (id) =>
-  apiCall(`/reviews/${id}`, {
-    method: 'DELETE'
-  });
+export const addReview = (reviewData) => {
+  // Placeholder for future implementation
+  return Promise.resolve({ success: true });
+};
+
+export const deleteReview = (id) => {
+  // Placeholder for future implementation
+  return Promise.resolve({ success: true });
+};

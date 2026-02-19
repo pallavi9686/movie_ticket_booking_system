@@ -1,22 +1,75 @@
 .booking-details-page {
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 100px 20px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-details-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 25% 35%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 75% 65%, rgba(255, 217, 61, 0.12) 0%, transparent 50%);
+  animation: float 25s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(3deg); }
 }
 
 .booking-ticket {
   max-width: 900px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-radius: 25px;
   overflow: hidden;
-  border: 2px solid rgba(233, 69, 96, 0.3);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border: 3px solid transparent;
+  border-image: linear-gradient(135deg, #ff6b6b, #ffd93d) 1;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 107, 107, 0.2);
+  backdrop-filter: blur(20px);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ticket-header {
-  background: linear-gradient(135deg, #e94560, #ff6b6b);
-  padding: 30px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffd93d 100%);
+  padding: 40px 30px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .ticket-header h1 {

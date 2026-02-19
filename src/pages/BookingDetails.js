@@ -179,8 +179,30 @@ const BookingDetails = () => {
                 <span className="value">{booking.show_time}</span>
               </div>
               <div className="detail-row">
+                <span className="label">Seats:</span>
+                <span className="value">{booking.seats.join(', ')}</span>
+              </div>
+              <div className="detail-row">
                 <span className="label">Booking Date:</span>
-                <span className="value">{new Date(booking.booking_date).toLocaleString()}</span>
+                <span className="value">{new Date(booking.booking_date).toLocaleDateString()}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Theater:</span>
+                <span className="value">
+                  {booking.theaterName ? (
+                    <>
+                      🎭 {booking.theaterName}
+                      <br />
+                      <small style={{ color: '#a8a8a8' }}>📍 {booking.theaterLocation}</small>
+                    </>
+                  ) : (
+                    'Theater information not available'
+                  )}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Total Paid:</span>
+                <span className="value">₹{parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
               <div className="detail-row">
                 <span className="label">Customer Name:</span>
@@ -189,23 +211,6 @@ const BookingDetails = () => {
               <div className="detail-row">
                 <span className="label">Email:</span>
                 <span className="value">{currentUser.email}</span>
-              </div>
-            </div>
-
-            <div className="seats-breakdown">
-              <h3>Selected Seats</h3>
-              <p className="seats-list">{booking.seats.join(', ')}</p>
-            </div>
-
-            <div className="payment-summary">
-              <h3>Payment Summary</h3>
-              <div className="summary-row">
-                <span>Total Amount:</span>
-                <span>₹{parseFloat(booking.total_price).toFixed(2)}</span>
-              </div>
-              <div className="summary-row total-row">
-                <span>Amount Paid:</span>
-                <span>₹{parseFloat(booking.total_price).toFixed(2)}</span>
               </div>
             </div>
           </div>

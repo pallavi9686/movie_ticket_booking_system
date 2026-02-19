@@ -1,5 +1,5 @@
 .home {
-  min-height: 100vh;
+  min-height: auto;
 }
 
 /* Hero Carousel */
@@ -183,8 +183,10 @@
 }
 
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
@@ -196,6 +198,8 @@
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 250px;
+  max-width: 350px;
 }
 
 .feature-card:hover {
@@ -297,8 +301,10 @@
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
@@ -309,6 +315,8 @@
   border-radius: 15px;
   border: 1px solid rgba(233, 69, 96, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 200px;
+  max-width: 300px;
 }
 
 .stat-card:hover {
@@ -335,8 +343,10 @@
 }
 
 .steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
@@ -348,6 +358,8 @@
   border: 1px solid rgba(233, 69, 96, 0.2);
   position: relative;
   transition: all 0.3s ease;
+  flex: 1 1 250px;
+  max-width: 350px;
 }
 
 .step-card:hover {
@@ -389,8 +401,10 @@
 }
 
 .testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
@@ -400,6 +414,8 @@
   border-radius: 15px;
   border: 1px solid rgba(233, 69, 96, 0.2);
   transition: all 0.3s ease;
+  flex: 1 1 300px;
+  max-width: 400px;
 }
 
 .testimonial-card:hover {

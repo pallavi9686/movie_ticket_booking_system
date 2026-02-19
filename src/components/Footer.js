@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section">
           <h3>🎬 CineBook</h3>
-          <p>Your trusted movie booking partner since 2024</p>
+          <p>Your ultimate movie booking platform. Book tickets, explore movies, and enjoy cinema like never before.</p>
           <div className="social-links" style={{ marginTop: '15px' }}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon">f</a>
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon">𝕏</a>
@@ -19,20 +19,19 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Quick Links</h4>
           <ul>
-            <li><Link to="/movies">Browse Movies</Link></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/movies">Movies</Link></li>
+            <li><Link to="/theaters">Theaters</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/register">Register</Link></li>
-            <li><Link to="/admin-login">Admin</Link></li>
           </ul>
         </div>
         
         <div className="footer-section">
-          <h4>Support</h4>
+          <h4>Account</h4>
           <ul>
-            <li><Link to="/help-center">Help Center</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/contact">Contact Us</Link></li>
-            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/my-bookings">My Bookings</Link></li>
+            <li><Link to="/admin-login">Admin</Link></li>
           </ul>
         </div>
         

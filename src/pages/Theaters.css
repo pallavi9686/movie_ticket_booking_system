@@ -1,0 +1,284 @@
+.theaters-page {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theaters-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(255, 217, 61, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.08) 0%, transparent 50%);
+  animation: float 25s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-30px) rotate(2deg); }
+  66% { transform: translateY(15px) rotate(-2deg); }
+}
+
+.theaters-header {
+  text-align: center;
+  margin-bottom: 60px;
+  color: white;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.theaters-header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: 800;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff6b6b);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.theaters-header p {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.city-filter {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.city-filter label {
+  color: white;
+  font-size: 1.1rem;
+  margin-right: 15px;
+  font-weight: 500;
+}
+
+.city-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.city-btn {
+  padding: 12px 28px;
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.city-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.city-btn:hover::before {
+  left: 100%;
+}
+
+.city-btn:hover {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: rgba(255, 107, 107, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+}
+
+.city-btn.active {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+  transform: translateY(-3px);
+}
+
+.theaters-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.theater-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.theater-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.theater-card:hover::before {
+  left: 100%;
+}
+
+.theater-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(255, 107, 107, 0.4);
+  border-color: rgba(255, 107, 107, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theater-icon {
+  font-size: 4.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3));
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.theater-info h2 {
+  color: white;
+  font-size: 1.7rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ffffff, #ffd93d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.theater-location,
+.theater-screens {
+  color: #a8a8a8;
+  font-size: 1rem;
+  margin: 8px 0;
+}
+
+.theater-rating {
+  display: inline-block;
+  background: linear-gradient(45deg, rgba(255, 217, 61, 0.2), rgba(255, 107, 107, 0.2));
+  color: #ffd93d;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 15px 0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 217, 61, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.theater-facilities {
+  margin-top: 20px;
+}
+
+.theater-facilities h4 {
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.facilities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.facility-tag {
+  background: linear-gradient(45deg, rgba(255, 107, 107, 0.15), rgba(255, 217, 61, 0.15));
+  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.facility-tag:hover {
+  background: linear-gradient(45deg, rgba(255, 107, 107, 0.3), rgba(255, 217, 61, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.no-theaters {
+  text-align: center;
+  color: #a8a8a8;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+  .theaters-header h1 {
+    font-size: 2rem;
+  }
+
+  .theaters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .city-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .city-btn {
+    width: 200px;
+  }
+}

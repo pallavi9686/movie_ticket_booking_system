@@ -6,7 +6,6 @@ import './Home.css';
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -15,8 +14,6 @@ const Home = () => {
         setMovies(data);
       } catch (error) {
         console.error('Failed to fetch movies:', error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchMovies();
@@ -30,13 +27,7 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [movies.length]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % movies.length);
-  };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + movies.length) % movies.length);
-  };
 
   return (
     <div className="home">
@@ -60,9 +51,6 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            
-            <button className="carousel-btn prev" onClick={prevSlide}>❮</button>
-            <button className="carousel-btn next" onClick={nextSlide}>❯</button>
             
             <div className="carousel-indicators">
               {movies.map((_, index) => (

@@ -27,6 +27,7 @@ const AdminDashboard = () => {
     poster: '',
     genre: '',
     duration: '',
+    rating: '',
     price: '',
     description: ''
   });
@@ -46,6 +47,7 @@ const AdminDashboard = () => {
       return;
     }
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadData = async () => {
@@ -90,6 +92,7 @@ const AdminDashboard = () => {
         poster: '',
         genre: '',
         duration: '',
+        rating: '',
         price: '',
         description: ''
       });
@@ -107,6 +110,7 @@ const AdminDashboard = () => {
       poster: movie.poster,
       genre: movie.genre,
       duration: movie.duration,
+      rating: movie.rating || '',
       price: movie.price || '',
       description: movie.description
     });
@@ -270,6 +274,20 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div className="form-group">
+                  <label>Rating</label>
+                  <input
+                    type="number"
+                    name="rating"
+                    value={movieForm.rating}
+                    onChange={handleMovieFormChange}
+                    placeholder="e.g., 4.5"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    required
+                  />
+                </div>
+                <div className="form-group">
                   <label>Base Price (₹)</label>
                   <input
                     type="number"
@@ -395,6 +413,7 @@ const AdminDashboard = () => {
                       <th>Booking ID</th>
                       <th>User Name</th>
                       <th>Movie</th>
+                      <th>Theater</th>
                       <th>Show Time</th>
                       <th>Seats</th>
                       <th>Total Price</th>
@@ -408,6 +427,7 @@ const AdminDashboard = () => {
                         <td>{booking.id}</td>
                         <td>{booking.user_name}</td>
                         <td>{booking.movie_title}</td>
+                        <td>{booking.theaterName || 'N/A'}</td>
                         <td>{booking.show_time}</td>
                         <td>{booking.seats.join(', ')}</td>
                         <td>₹{booking.total_price ? parseFloat(booking.total_price).toFixed(2) : 'N/A'}</td>

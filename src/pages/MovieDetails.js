@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SeatLayout from '../components/SeatLayout';
-import { getMovieById, getBookedSeats, calculateTotalPrice, validateCoupon, createBooking, getMovieReviews, addReview, deleteReview } from '../utils/api';
+import { getMovieById, getBookedSeats, validateCoupon, createBooking, getMovieReviews, addReview, deleteReview } from '../utils/api';
 import './MovieDetails.css';
 
 const MovieDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
+  const [selectedTheater, setSelectedTheater] = useState(null);
   const [selectedShowDate, setSelectedShowDate] = useState('');
   const [selectedShowTime, setSelectedShowTime] = useState('');
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -26,6 +27,46 @@ const MovieDetails = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+  // Theater data
+  const theaters = [
+    {
+      id: 1,
+      name: 'PVR Cinemas',
+      location: 'Phoenix Mall, Mumbai',
+      city: 'Mumbai',
+      screens: 8,
+      facilities: ['IMAX', '4DX', 'Dolby Atmos', 'Recliner Seats'],
+      image: '🎭'
+    },
+    {
+      id: 2,
+      name: 'INOX Megaplex',
+      location: 'Select City Walk, Delhi',
+      city: 'Delhi',
+      screens: 12,
+      facilities: ['IMAX', 'Dolby Atmos', 'Premium Lounge', 'Food Court'],
+      image: '🎪'
+    },
+    {
+      id: 3,
+      name: 'Cinepolis',
+      location: 'Forum Mall, Bangalore',
+      city: 'Bangalore',
+      screens: 6,
+      facilities: ['4DX', 'VIP Seats', 'Dolby Atmos', 'Cafe'],
+      image: '🎬'
+    },
+    {
+      id: 4,
+      name: 'Carnival Cinemas',
+      location: 'Nexus Mall, Pune',
+      city: 'Pune',
+      screens: 5,
+      facilities: ['Dolby Atmos', 'Recliner Seats', 'Parking'],
+      image: '🎞️'
+    }
+  ];
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -36,6 +77,8 @@ const MovieDetails = () => {
         // Set default date to today
         const today = new Date().toISOString().split('T')[0];
         setSelectedShowDate(today);
+        // Set default theater to first one
+        setSelectedTheater(theaters[0]);
         if (movieData.showTimings && movieData.showTimings.length > 0) {
           console.log('Setting show time to:', movieData.showTimings[0]);
           setSelectedShowTime(movieData.showTimings[0]);
@@ -46,11 +89,27 @@ const MovieDetails = () => {
     };
     fetchMovie();
     fetchReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchReviews = async () => {
     try {
       const data = await getMovieReviews(id);
+<<<<<<< HEAD
+      // Handle both array response and object response
+      if (Array.isArray(data)) {
+        setReviews(data);
+        setAvgRating(0);
+        setTotalReviews(data.length);
+      } else {
+        setReviews(data.reviews || []);
+        setAvgRating(data.avgRating || 0);
+        setTotalReviews(data.totalReviews || 0);
+      }
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+      setReviews([]); // Ensure reviews is always an array
+=======
       setReviews(data.reviews || []);
       setAvgRating(data.avgRating || 0);
       setTotalReviews(data.totalReviews || 0);
@@ -60,6 +119,7 @@ const MovieDetails = () => {
       setReviews([]);
       setAvgRating(0);
       setTotalReviews(0);
+>>>>>>> origin
     }
   };
 
@@ -76,6 +136,7 @@ const MovieDetails = () => {
       };
       fetchBookedSeats();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie, selectedShowDate, selectedShowTime]);
 
   const handleSeatSelect = (seat) => {
@@ -138,6 +199,11 @@ const MovieDetails = () => {
       return;
     }
 
+    if (!selectedTheater) {
+      setMessage({ type: 'error', text: 'Please select a theater' });
+      return;
+    }
+
     if (selectedSeats.length === 0) {
       setMessage({ type: 'error', text: 'Please select at least one seat' });
       return;
@@ -169,7 +235,7 @@ const MovieDetails = () => {
       }
     }
 
-    const { totalPrice, discount, finalAmount } = calculateFinalAmount();
+    const { finalAmount } = calculateFinalAmount();
 
     if (!selectedShowDate || selectedShowDate.trim() === '') {
       setMessage({ type: 'error', text: '❌ Please select a show date' });
@@ -196,7 +262,10 @@ const MovieDetails = () => {
       showDate: selectedShowDate,
       showTime: selectedShowTime,
       seats: selectedSeats,
-      totalPrice: finalAmount
+      totalPrice: finalAmount,
+      theaterId: selectedTheater.id,
+      theaterName: selectedTheater.name,
+      theaterLocation: selectedTheater.location
     };
 
     try {
@@ -306,10 +375,41 @@ const MovieDetails = () => {
             />
           </div>
 
+          <div className="theater-selection">
+            <h3>🎭 Select Theater</h3>
+            <div className="theaters-grid">
+              {theaters.map(theater => (
+                <div
+                  key={theater.id}
+                  className={`theater-card ${selectedTheater?.id === theater.id ? 'selected' : ''}`}
+                  onClick={() => setSelectedTheater(theater)}
+                >
+                  <div className="theater-icon">{theater.image}</div>
+                  <div className="theater-info">
+                    <h4>{theater.name}</h4>
+                    <p className="theater-location">📍 {theater.location}</p>
+                    <div className="theater-facilities">
+                      {theater.facilities.slice(0, 2).map((facility, index) => (
+                        <span key={index} className="facility-badge">
+                          {facility}
+                        </span>
+                      ))}
+                      {theater.facilities.length > 2 && (
+                        <span className="facility-badge more">
+                          +{theater.facilities.length - 2} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="show-times">
             <h3>Select Show Time</h3>
             <div className="show-times-grid">
-              {movie.showTimings.map(time => (
+              {movie.showTimings && movie.showTimings.map(time => (
                 <button
                   key={time}
                   className={`show-time-btn ${selectedShowTime === time ? 'active' : ''}`}
@@ -325,6 +425,7 @@ const MovieDetails = () => {
             selectedSeats={selectedSeats}
             bookedSeats={bookedSeats}
             onSeatSelect={handleSeatSelect}
+            movie={movie}
           />
 
           <div className="booking-summary">
@@ -339,8 +440,19 @@ const MovieDetails = () => {
               )}
               <p>Show Date: {selectedShowDate ? new Date(selectedShowDate).toLocaleDateString() : 'Not selected'}</p>
               <p>Show Time: {selectedShowTime}</p>
+              <p>Theater: {selectedTheater ? `${selectedTheater.name} - ${selectedTheater.location}` : 'Not selected'}</p>
               <p>Base Price per Seat: ₹{movie.price}</p>
-              <p className="price-note">💡 Rows A-B: 20% off | Rows C-D: Standard | Rows E-F: 20% premium</p>
+              <div className="pricing-breakdown">
+                <div className="price-info-item discount">
+                  <span>💰 Front Seats (A-B): 20% OFF</span>
+                </div>
+                <div className="price-info-item standard">
+                  <span>🎟️ Middle Seats (C-D): Standard Price</span>
+                </div>
+                <div className="price-info-item premium">
+                  <span>⭐ Back Seats (E-F): +20% Premium</span>
+                </div>
+              </div>
               
               {!showPayment && (
                 <>
@@ -394,11 +506,13 @@ const MovieDetails = () => {
               <button
                 className="btn btn-primary"
                 onClick={handleProceedToPayment}
-                disabled={selectedSeats.length === 0}
+                disabled={selectedSeats.length === 0 || !selectedTheater}
               >
-                {selectedSeats.length > 0 
-                  ? `Proceed to Payment - ₹${calculateFinalAmount().finalAmount.toFixed(2)}`
-                  : 'Select Seats to Continue'
+                {!selectedTheater 
+                  ? 'Select Theater to Continue'
+                  : selectedSeats.length > 0 
+                    ? `Proceed to Payment - ₹${calculateFinalAmount().finalAmount.toFixed(2)}`
+                    : 'Select Seats to Continue'
                 }
               </button>
             ) : (
@@ -540,7 +654,7 @@ const MovieDetails = () => {
           )}
 
           <div className="reviews-list">
-            {reviews.length > 0 ? (
+            {reviews && reviews.length > 0 ? (
               reviews.map(review => (
                 <div key={review.id} className="review-card">
                   <div className="review-header">
