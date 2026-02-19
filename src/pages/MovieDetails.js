@@ -51,11 +51,15 @@ const MovieDetails = () => {
   const fetchReviews = async () => {
     try {
       const data = await getMovieReviews(id);
-      setReviews(data.reviews);
-      setAvgRating(data.avgRating);
-      setTotalReviews(data.totalReviews);
+      setReviews(data.reviews || []);
+      setAvgRating(data.avgRating || 0);
+      setTotalReviews(data.totalReviews || 0);
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
+      // Set default values if reviews fail to load
+      setReviews([]);
+      setAvgRating(0);
+      setTotalReviews(0);
     }
   };
 
