@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getMovieById, getUserBookings, cancelBooking } from '../utils/api';
+import { getMovieById, getUserBookings, cancelBooking, getMovieReviews, addReview } from '../utils/api';
 import './BookingDetails.css';
 
 const BookingDetails = () => {
@@ -9,6 +9,11 @@ const BookingDetails = () => {
   const [booking, setBooking] = useState(null);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showReviewPrompt, setShowReviewPrompt] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+  const [userComment, setUserComment] = useState('');
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   useEffect(() => {
@@ -26,6 +31,18 @@ const BookingDetails = () => {
           setBooking(foundBooking);
           const movieData = await getMovieById(foundBooking.movie_id);
           setMovie(movieData);
+          
+          // Check if user has already reviewed this movie
+          const reviewsData = await getMovieReviews(foundBooking.movie_id);
+          const userReview = reviewsData.reviews ? reviewsData.reviews.find(r => r.user_id === currentUser.id) : null;
+          setHasReviewed(!!userReview);
+          
+          // Show review prompt if booking is completed and user hasn't reviewed
+          const showDate = new Date(foundBooking.show_date);
+          const today = new Date();
+          if (showDate <= today && !userReview) {
+            setShowReviewPrompt(true);
+          }
         } else {
           navigate('/my-bookings');
         }
@@ -55,6 +72,29 @@ const BookingDetails = () => {
     window.print();
   };
 
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    
+    if (userRating === 0) {
+      setMessage({ type: 'error', text: 'Please select a rating' });
+      return;
+    }
+
+    try {
+      await addReview({
+        movie_id: movie.id,
+        rating: userRating,
+        comment: userComment
+      });
+      setMessage({ type: 'success', text: 'Thank you for your review!' });
+      setShowReviewPrompt(false);
+      setHasReviewed(true);
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message });
+    }
+  };
+
   if (loading) {
     return <div className="container">Loading...</div>;
   }
@@ -66,6 +106,53 @@ const BookingDetails = () => {
   return (
     <div className="booking-details-page">
       <div className="container">
+        {message.text && (
+          <div className={`message ${message.type}`}>
+            {message.text}
+          </div>
+        )}
+
+        {showReviewPrompt && !hasReviewed && (
+          <div className="review-prompt">
+            <div className="review-prompt-header">
+              <h3>🌟 How was your experience?</h3>
+              <p>Share your thoughts about {movie.title}</p>
+            </div>
+            <form onSubmit={handleSubmitReview} className="review-prompt-form">
+              <div className="rating-input">
+                <label>Your Rating:</label>
+                <div className="stars">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                      key={star}
+                      className={`star ${userRating >= star ? 'filled' : ''}`}
+                      onClick={() => setUserRating(star)}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <textarea
+                placeholder="Tell us what you thought about the movie..."
+                value={userComment}
+                onChange={(e) => setUserComment(e.target.value)}
+                rows="3"
+              />
+              <div className="review-prompt-actions">
+                <button type="submit" className="btn btn-primary">Submit Review</button>
+                <button 
+                  type="button" 
+                  onClick={() => setShowReviewPrompt(false)} 
+                  className="btn btn-secondary"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
         <div className="booking-ticket">
           <div className="ticket-header">
             <h1>🎬 Booking Confirmation</h1>

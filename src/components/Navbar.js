@@ -98,6 +98,7 @@ const Navbar = () => {
         <ul className="navbar-menu">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/movies">Movies</Link></li>
+<<<<<<< HEAD
           <li><Link to="/theaters">Theaters</Link></li>
           
           <li className="offers-dropdown">
@@ -163,6 +164,9 @@ const Navbar = () => {
               </div>
             )}
           </li>
+=======
+          <li><Link to="/releases">Releases</Link></li>
+>>>>>>> origin
 
           {user && (
             <li><Link to="/my-bookings">My Bookings</Link></li>
