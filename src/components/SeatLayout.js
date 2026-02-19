@@ -56,13 +56,6 @@ const SeatLayout = ({ selectedSeats, bookedSeats, onSeatSelect, movie }) => {
     seatsToSelect.forEach(seat => onSeatSelect(seat)); // Select new
   };
 
-  const getSeatPrice = (seat) => {
-    if (!movie) return 0;
-    const row = seat.charAt(0);
-    const multiplier = ['A', 'B'].includes(row) ? 0.8 : ['C', 'D'].includes(row) ? 1.0 : 1.2;
-    return movie.price * multiplier;
-  };
-
   return (
     <div className="seat-layout">
       <div className="screen">

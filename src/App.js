@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
 import Theaters from './pages/Theaters';
+import Offers from './pages/Offers';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminLogin from './pages/AdminLogin';
@@ -28,6 +29,7 @@ function AppContent() {
         <Route path="/movies" element={<Movies />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
         <Route path="/theaters" element={<Theaters />} />
+        <Route path="/offers" element={<Offers />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin-login" element={<AdminLogin />} />

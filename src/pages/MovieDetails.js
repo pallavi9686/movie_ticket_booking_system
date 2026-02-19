@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SeatLayout from '../components/SeatLayout';
-import { getMovieById, getBookedSeats, calculateTotalPrice, validateCoupon, createBooking, getMovieReviews, addReview, deleteReview } from '../utils/api';
+import { getMovieById, getBookedSeats, validateCoupon, createBooking, getMovieReviews, addReview, deleteReview } from '../utils/api';
 import './MovieDetails.css';
 
 const MovieDetails = () => {
@@ -89,6 +89,7 @@ const MovieDetails = () => {
     };
     fetchMovie();
     fetchReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchReviews = async () => {
@@ -123,6 +124,7 @@ const MovieDetails = () => {
       };
       fetchBookedSeats();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movie, selectedShowDate, selectedShowTime]);
 
   const handleSeatSelect = (seat) => {
@@ -221,7 +223,7 @@ const MovieDetails = () => {
       }
     }
 
-    const { totalPrice, discount, finalAmount } = calculateFinalAmount();
+    const { finalAmount } = calculateFinalAmount();
 
     if (!selectedShowDate || selectedShowDate.trim() === '') {
       setMessage({ type: 'error', text: '❌ Please select a show date' });

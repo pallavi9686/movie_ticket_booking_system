@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { loginUser } from '../utils/api';
 import './Auth.css';
 
@@ -12,7 +12,6 @@ const Login = () => {
   const [resetMessage, setResetMessage] = useState('');
   const [resetError, setResetError] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

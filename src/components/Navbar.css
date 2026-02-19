@@ -3,9 +3,10 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(15, 12, 41, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(15, 12, 41, 0.98), rgba(26, 26, 46, 0.98));
+  backdrop-filter: blur(25px) saturate(180%);
+  border-bottom: 2px solid rgba(255, 107, 107, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   transition: all 0.3s ease;
   animation: slideDown 0.8s ease-out;

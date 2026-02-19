@@ -1,6 +1,27 @@
 .admin-dashboard {
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 100px 20px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-dashboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(255, 217, 61, 0.08) 0%, transparent 50%);
+  animation: float 25s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(2deg); }
 }
 
 .admin-tabs {
@@ -12,15 +33,33 @@
 }
 
 .tab-btn {
-  padding: 12px 30px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  padding: 14px 32px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 25px;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.tab-btn:hover::before {
+  left: 100%;
 }
 
 .tab-btn:hover {
@@ -29,8 +68,10 @@
 }
 
 .tab-btn.active {
-  background: #e94560;
-  border-color: #e94560;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffd93d 100%);
+  border-color: transparent;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+  transform: translateY(-2px);
 }
 
 .admin-section {

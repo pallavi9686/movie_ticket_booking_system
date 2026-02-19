@@ -55,13 +55,14 @@
 }
 
 .booking-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  border-radius: 25px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(15px);
   position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .booking-card::before {
@@ -79,9 +80,9 @@
 }
 
 .booking-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 50px rgba(255, 107, 107, 0.4);
-  border-color: rgba(255, 107, 107, 0.6);
+  transform: translateY(-15px) scale(1.03) rotateY(2deg);
+  box-shadow: 0 30px 70px rgba(255, 107, 107, 0.6), 0 0 40px rgba(255, 217, 61, 0.3);
+  border-color: rgba(255, 107, 107, 0.8);
 }
 
 .booking-card:hover::before {

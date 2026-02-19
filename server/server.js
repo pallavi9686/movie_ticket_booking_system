@@ -1,8 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const pool = require('./config/database');
 
 const app = express();
+
+// Test database connection
+pool.getConnection()
+  .then(connection => {
+    console.log('✅ Database connected successfully');
+    connection.release();
+  })
+  .catch(err => {
+    console.error('❌ Database connection failed:', err.message);
+    console.error('Please check:');
+    console.error('1. MySQL service is running');
+    console.error('2. Database "cinema_booking" exists');
+    console.error('3. Credentials in .env file are correct');
+    process.exit(1);
+  });
 
 // Middleware
 app.use(cors());

@@ -27,6 +27,7 @@ const AdminDashboard = () => {
     poster: '',
     genre: '',
     duration: '',
+    rating: '',
     price: '',
     description: ''
   });
@@ -46,6 +47,7 @@ const AdminDashboard = () => {
       return;
     }
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadData = async () => {
@@ -90,6 +92,7 @@ const AdminDashboard = () => {
         poster: '',
         genre: '',
         duration: '',
+        rating: '',
         price: '',
         description: ''
       });
@@ -107,6 +110,7 @@ const AdminDashboard = () => {
       poster: movie.poster,
       genre: movie.genre,
       duration: movie.duration,
+      rating: movie.rating || '',
       price: movie.price || '',
       description: movie.description
     });
@@ -266,6 +270,20 @@ const AdminDashboard = () => {
                     value={movieForm.duration}
                     onChange={handleMovieFormChange}
                     placeholder="e.g., 120 min"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Rating</label>
+                  <input
+                    type="number"
+                    name="rating"
+                    value={movieForm.rating}
+                    onChange={handleMovieFormChange}
+                    placeholder="e.g., 4.5"
+                    min="0"
+                    max="5"
+                    step="0.1"
                     required
                   />
                 </div>

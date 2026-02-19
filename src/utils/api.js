@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5003/api';
 
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {
@@ -25,9 +25,13 @@ const apiCall = async (endpoint, options = {}) => {
 
     return response.json();
   } catch (error) {
-    // If server is not running, fall back to localStorage for development
-    console.warn('API server not available, using localStorage fallback:', error.message);
-    throw new Error('Server not available. Please start the backend server.');
+    // Check if it's a network error (server not running)
+    if (error.message === 'Failed to fetch' || error.message.includes('fetch')) {
+      console.error('❌ Server not available. Please start the backend server.');
+      throw new Error('Server not available. Please start the backend server.');
+    }
+    // Otherwise, it's an API error - throw the actual error message
+    throw error;
   }
 };
 
@@ -74,6 +78,8 @@ export const cancelBooking = (bookingId) =>
   });
 
 // Coupon APIs
+export const getCoupons = () => apiCall('/admin/coupons');
+
 export const validateCoupon = (code) =>
   apiCall('/coupons/validate', {
     method: 'POST',
