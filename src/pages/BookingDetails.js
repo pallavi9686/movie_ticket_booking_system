@@ -170,30 +170,14 @@ const BookingDetails = () => {
             </div>
 
             <div className="booking-details-section">
-              <div className="detail-row">
-                <span className="label">Show Date:</span>
-                <span className="value">{booking.show_date ? new Date(booking.show_date).toLocaleDateString() : 'N/A'}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Show Time:</span>
-                <span className="value">{booking.show_time}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Seats:</span>
-                <span className="value">{booking.seats.join(', ')}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Booking Date:</span>
-                <span className="value">{new Date(booking.booking_date).toLocaleDateString()}</span>
-              </div>
-              <div className="detail-row">
-                <span className="label">Theater:</span>
-                <span className="value">
+              <div className="detail-row theater-highlight">
+                <span className="label">🎭 Theater:</span>
+                <span className="value theater-name">
                   {booking.theaterName ? (
                     <>
-                      🎭 {booking.theaterName}
+                      <strong>{booking.theaterName}</strong>
                       <br />
-                      <small style={{ color: '#a8a8a8' }}>📍 {booking.theaterLocation}</small>
+                      <small className="theater-location">📍 {booking.theaterLocation}</small>
                     </>
                   ) : (
                     'Theater information not available'
@@ -201,15 +185,31 @@ const BookingDetails = () => {
                 </span>
               </div>
               <div className="detail-row">
-                <span className="label">Total Paid:</span>
-                <span className="value">₹{parseFloat(booking.total_price).toFixed(2)}</span>
+                <span className="label">📅 Show Date:</span>
+                <span className="value">{booking.show_date ? new Date(booking.show_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}</span>
               </div>
               <div className="detail-row">
-                <span className="label">Customer Name:</span>
+                <span className="label">🕐 Show Time:</span>
+                <span className="value">{booking.show_time}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">💺 Seats:</span>
+                <span className="value seats-display">{booking.seats.join(', ')}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">📆 Booking Date:</span>
+                <span className="value">{new Date(booking.booking_date).toLocaleDateString()}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">💰 Total Paid:</span>
+                <span className="value price-display">₹{parseFloat(booking.total_price).toFixed(2)}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">👤 Customer Name:</span>
                 <span className="value">{currentUser.name}</span>
               </div>
               <div className="detail-row">
-                <span className="label">Email:</span>
+                <span className="label">📧 Email:</span>
                 <span className="value">{currentUser.email}</span>
               </div>
             </div>

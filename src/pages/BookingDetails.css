@@ -15,13 +15,7 @@
   background: 
     radial-gradient(circle at 25% 35%, rgba(255, 107, 107, 0.12) 0%, transparent 50%),
     radial-gradient(circle at 75% 65%, rgba(255, 217, 61, 0.12) 0%, transparent 50%);
-  animation: float 25s ease-in-out infinite;
   z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(3deg); }
 }
 
 .booking-ticket {
@@ -34,18 +28,6 @@
   border-image: linear-gradient(135deg, #ff6b6b, #ffd93d) 1;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 107, 107, 0.2);
   backdrop-filter: blur(20px);
-  animation: fadeInUp 0.8s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .ticket-header {
@@ -64,12 +46,6 @@
   width: 200%;
   height: 200%;
   background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 .ticket-header h1 {
@@ -291,18 +267,6 @@
   border: 2px solid rgba(233, 69, 96, 0.3);
   border-radius: 20px;
   padding: 30px;
-  animation: slideDown 0.5s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .review-prompt-header {
@@ -400,7 +364,6 @@
   border-radius: 12px;
   text-align: center;
   font-weight: 600;
-  animation: slideDown 0.3s ease;
 }
 
 .message.success {
@@ -447,4 +410,61 @@
   .review-prompt-actions .btn {
     width: 100%;
   }
+}
+
+
+/* Theater Name Highlight */
+.detail-row.theater-highlight {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 217, 61, 0.15));
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.detail-row.theater-highlight .label {
+  color: #ffd93d;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.detail-row.theater-highlight .value.theater-name {
+  color: #fff;
+  font-size: 18px;
+}
+
+.detail-row.theater-highlight .value.theater-name strong {
+  color: #ff6b6b;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.detail-row.theater-highlight .theater-location {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-style: italic;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Seats Display */
+.seats-display {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 193, 7, 0.2));
+  padding: 8px 15px;
+  border-radius: 8px;
+  color: #ffd700 !important;
+  font-weight: 700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Price Display */
+.price-display {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(102, 187, 106, 0.2));
+  padding: 8px 15px;
+  border-radius: 8px;
+  color: #5cb85c !important;
+  font-weight: 700;
+  font-size: 20px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
 }

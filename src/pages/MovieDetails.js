@@ -25,6 +25,8 @@ const MovieDetails = () => {
   const [userRating, setUserRating] = useState(0);
   const [userComment, setUserComment] = useState('');
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showPostBookingRating, setShowPostBookingRating] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   // Theater data
@@ -95,7 +97,6 @@ const MovieDetails = () => {
   const fetchReviews = async () => {
     try {
       const data = await getMovieReviews(id);
-<<<<<<< HEAD
       // Handle both array response and object response
       if (Array.isArray(data)) {
         setReviews(data);
@@ -108,18 +109,10 @@ const MovieDetails = () => {
       }
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
-      setReviews([]); // Ensure reviews is always an array
-=======
-      setReviews(data.reviews || []);
-      setAvgRating(data.avgRating || 0);
-      setTotalReviews(data.totalReviews || 0);
-    } catch (error) {
-      console.error('Failed to fetch reviews:', error);
       // Set default values if reviews fail to load
       setReviews([]);
       setAvgRating(0);
       setTotalReviews(0);
->>>>>>> origin
     }
   };
 
@@ -276,12 +269,47 @@ const MovieDetails = () => {
       console.log('Creating booking with data:', bookingData);
       console.log('Token available:', !!token);
       await createBooking(bookingData);
+      setBookingSuccess(true);
       setMessage({ type: 'success', text: '✅ Payment successful! Booking confirmed.' });
-      setTimeout(() => navigate('/my-bookings'), 2000);
+      // Show rating prompt after successful booking
+      setTimeout(() => {
+        setShowPostBookingRating(true);
+      }, 1500);
     } catch (error) {
       console.error('Booking error:', error);
       setMessage({ type: 'error', text: `❌ ${error.message}` });
     }
+  };
+
+  const handlePostBookingReview = async (e) => {
+    e.preventDefault();
+    
+    if (userRating === 0) {
+      setMessage({ type: 'error', text: 'Please select a rating' });
+      return;
+    }
+
+    try {
+      await addReview({
+        movie_id: movie.id,
+        rating: userRating,
+        comment: userComment
+      });
+      setMessage({ type: 'success', text: '✅ Thank you for your review!' });
+      setShowPostBookingRating(false);
+      setUserRating(0);
+      setUserComment('');
+      fetchReviews();
+      setTimeout(() => navigate('/my-bookings'), 2000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.message });
+      setTimeout(() => navigate('/my-bookings'), 2000);
+    }
+  };
+
+  const handleSkipRating = () => {
+    setShowPostBookingRating(false);
+    navigate('/my-bookings');
   };
 
   const handleSubmitReview = async (e) => {
@@ -334,6 +362,52 @@ const MovieDetails = () => {
 
   return (
     <div className="movie-details-page">
+      {/* Post-Booking Rating Modal */}
+      {showPostBookingRating && (
+        <div className="rating-modal-overlay">
+          <div className="rating-modal">
+            <div className="rating-modal-header">
+              <h2>🎉 Booking Successful!</h2>
+              <p>How would you rate {movie.title}?</p>
+            </div>
+            <form onSubmit={handlePostBookingReview} className="rating-modal-form">
+              <div className="rating-input">
+                <label>Your Rating:</label>
+                <div className="stars">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <span
+                      key={star}
+                      className={`star ${userRating >= star ? 'filled' : ''}`}
+                      onClick={() => setUserRating(star)}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <textarea
+                placeholder="Share your thoughts about this movie... (optional)"
+                value={userComment}
+                onChange={(e) => setUserComment(e.target.value)}
+                rows="4"
+              />
+              <div className="rating-modal-actions">
+                <button type="submit" className="btn btn-primary">
+                  Submit Review
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleSkipRating} 
+                  className="btn btn-secondary"
+                >
+                  Skip for Now
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       <div className="movie-header" style={{ backgroundImage: `url(${movie.poster})` }}>
         <div className="movie-header-overlay">
           <div className="container">

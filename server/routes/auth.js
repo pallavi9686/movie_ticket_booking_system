@@ -9,10 +9,16 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
+    console.log('Register request body:', req.body);
     const { name, email, password, phone } = req.body;
     
     if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      console.log('Missing fields - name:', name, 'email:', email, 'password:', !!password);
+      return res.status(400).json({ error: `Missing required fields: ${!name ? 'name ' : ''}${!email ? 'email ' : ''}${!password ? 'password' : ''}`.trim() });
+    }
+
+    if (password === email) {
+      return res.status(400).json({ error: 'Password cannot be the same as your email' });
     }
 
     try {

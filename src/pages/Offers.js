@@ -23,9 +23,43 @@ const Offers = () => {
   };
 
   const copyToClipboard = (code) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(null), 2000);
+    // Check if clipboard API is available
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code)
+        .then(() => {
+          setCopiedCode(code);
+          setTimeout(() => setCopiedCode(null), 2000);
+        })
+        .catch(err => {
+          console.error('Failed to copy:', err);
+          // Fallback method
+          fallbackCopyToClipboard(code);
+        });
+    } else {
+      // Fallback for browsers that don't support clipboard API
+      fallbackCopyToClipboard(code);
+    }
+  };
+
+  const fallbackCopyToClipboard = (code) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = code;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
+    } catch (err) {
+      console.error('Fallback copy failed:', err);
+      alert(`Copy this code: ${code}`);
+    }
+    
+    document.body.removeChild(textArea);
   };
 
   const formatDate = (dateString) => {

@@ -13,21 +13,17 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import MyBookings from './pages/MyBookings';
 import BookingDetails from './pages/BookingDetails';
-<<<<<<< HEAD
-=======
 import Releases from './pages/Releases';
 import HelpCenter from './pages/HelpCenter';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
->>>>>>> origin
 import { initializeApp } from './utils/storage';
 import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const showFooterPages = ['/', '/admin'];
-  const showFooter = showFooterPages.includes(location.pathname);
+  const showFooter = !location.pathname.startsWith('/admin');
 
   return (
     <div className="App">
@@ -45,6 +41,10 @@ function AppContent() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/booking/:id" element={<BookingDetails />} />
+        <Route path="/help" element={<HelpCenter />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
       {showFooter && <Footer />}
     </div>

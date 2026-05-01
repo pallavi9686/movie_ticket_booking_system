@@ -10,38 +10,47 @@ router.post('/', verifyToken, async (req, res) => {
     const { movieId, showDate, showTime, seats, totalPrice, theaterId, theaterName, theaterLocation } = req.body;
     const userId = req.userId;
 
+    console.log('Booking request:', { movieId, showDate, showTime, seats, totalPrice, theaterId, theaterName, theaterLocation, userId });
+
     if (!movieId || !showDate || !showTime || !seats || !totalPrice) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     const connection = await pool.getConnection();
 
-    // Check if seats are already booked
-    const [existingBookings] = await connection.query(
-      'SELECT * FROM bookings WHERE movie_id = ? AND show_date = ? AND show_time = ?',
-      [movieId, showDate, showTime]
-    );
+    try {
+      // Check if seats are already booked
+      const [existingBookings] = await connection.query(
+        'SELECT * FROM bookings WHERE movie_id = ? AND show_date = ? AND show_time = ?',
+        [movieId, showDate, showTime]
+      );
 
-    for (let booking of existingBookings) {
-      const bookedSeats = JSON.parse(booking.seats);
-      const conflict = seats.some(seat => bookedSeats.includes(seat));
-      if (conflict) {
-        connection.release();
-        return res.status(400).json({ error: 'Some seats are already booked' });
+      for (let booking of existingBookings) {
+        const bookedSeats = JSON.parse(booking.seats);
+        const conflict = seats.some(seat => bookedSeats.includes(seat));
+        if (conflict) {
+          connection.release();
+          return res.status(400).json({ error: 'Some seats are already booked' });
+        }
       }
+
+      // Create booking with theater info (use NULL if not provided)
+      const [result] = await connection.query(
+        'INSERT INTO bookings (user_id, movie_id, show_date, show_time, seats, total_price, theater_id, theater_name, theater_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [userId, movieId, showDate, showTime, JSON.stringify(seats), totalPrice, theaterId || null, theaterName || null, theaterLocation || null]
+      );
+
+      console.log('Booking created successfully:', result.insertId);
+      connection.release();
+      res.status(201).json({ message: 'Booking created successfully', bookingId: result.insertId });
+    } catch (dbError) {
+      connection.release();
+      console.error('Database error:', dbError);
+      throw dbError;
     }
-
-    // Create booking
-    await connection.query(
-      'INSERT INTO bookings (user_id, movie_id, show_date, show_time, seats, total_price, theater_id, theater_name, theater_location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [userId, movieId, showDate, showTime, JSON.stringify(seats), totalPrice, theaterId, theaterName, theaterLocation]
-    );
-
-    connection.release();
-    res.status(201).json({ message: 'Booking created successfully' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Booking failed' });
+    console.error('Booking error:', error);
+    res.status(500).json({ error: 'Booking failed: ' + error.message });
   }
 });
 

@@ -6,12 +6,18 @@ import './Home.css';
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [recentMovies, setRecentMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const data = await getMovies();
         setMovies(data);
+        // Sort by releaseDate descending, take top 4
+        const sorted = [...data]
+          .sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate))
+          .slice(0, 4);
+        setRecentMovies(sorted);
       } catch (error) {
         console.error('Failed to fetch movies:', error);
       }
@@ -64,6 +70,36 @@ const Home = () => {
           </div>
         )}
       </section>
+
+      {/* Recent Releases */}
+      {recentMovies.length > 0 && (
+        <section className="recent-releases">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">🎬 Recent Releases</h2>
+              <Link to="/releases" className="view-all-link">View All →</Link>
+            </div>
+            <div className="recent-grid">
+              {recentMovies.map(movie => (
+                <Link to={`/movie/${movie.id}`} key={movie.id} className="recent-card">
+                  <div className="recent-poster-wrap">
+                    <img src={movie.poster} alt={movie.title} className="recent-poster" />
+                    <div className="recent-overlay">
+                      <span className="recent-rating">⭐ {movie.rating}</span>
+                    </div>
+                    <span className="recent-badge">New</span>
+                  </div>
+                  <div className="recent-info">
+                    <h3>{movie.title}</h3>
+                    <p>{movie.genre} · {movie.duration}</p>
+                    <span className="recent-book-btn">Book Now</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="cta-section">
