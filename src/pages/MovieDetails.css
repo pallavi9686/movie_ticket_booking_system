@@ -14,13 +14,7 @@
   background: 
     radial-gradient(circle at 20% 40%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 60%, rgba(255, 217, 61, 0.1) 0%, transparent 50%);
-  animation: float 25s ease-in-out infinite;
   z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(2deg); }
 }
 
 .movie-header {
@@ -669,12 +663,6 @@
 }
 
 .theater-card.selected .theater-icon {
-  animation: bounce 1s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
 }
 
 .theater-icon {
@@ -731,5 +719,143 @@
   
   .theater-info h4 {
     font-size: 1.1rem;
+  }
+}
+
+
+/* Post-Booking Rating Modal */
+.rating-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.rating-modal {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  border-radius: 25px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+}
+
+.rating-modal-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.rating-modal-header h2 {
+  font-size: 32px;
+  color: #ffd93d;
+  margin-bottom: 10px;
+}
+
+.rating-modal-header p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rating-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rating-modal-form .rating-input {
+  text-align: center;
+}
+
+.rating-modal-form .rating-input label {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.rating-modal-form .stars {
+  display: flex;
+  gap: 10px;
+  font-size: 50px;
+  justify-content: center;
+}
+
+.rating-modal-form .star {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.rating-modal-form .star:hover,
+.rating-modal-form .star.filled {
+  color: #ffd700;
+  transform: scale(1.2) rotate(10deg);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.rating-modal-form textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.rating-modal-form textarea:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+}
+
+.rating-modal-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rating-modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.rating-modal-actions .btn {
+  flex: 1;
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .rating-modal {
+    padding: 30px 20px;
+  }
+  
+  .rating-modal-header h2 {
+    font-size: 24px;
+  }
+  
+  .rating-modal-form .stars {
+    font-size: 40px;
+    gap: 5px;
+  }
+  
+  .rating-modal-actions {
+    flex-direction: column;
   }
 }

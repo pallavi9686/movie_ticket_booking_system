@@ -31,12 +31,6 @@
   width: 200%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: screenShine 3s infinite;
-}
-
-@keyframes screenShine {
-  0% { left: -100%; }
-  100% { left: 100%; }
 }
 
 .screen-label {
@@ -95,16 +89,6 @@
   color: #000;
   font-weight: bold;
   box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
 }
 
 .seat.booked {
@@ -321,20 +305,9 @@
 
 .tier-discount,
 .tier-premium {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-  }
 }
 
 .pricing-tier.clickable .tier-discount:hover,
 .pricing-tier.clickable .tier-premium:hover {
-  animation: none;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
 }

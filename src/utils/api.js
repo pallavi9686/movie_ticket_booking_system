@@ -3,7 +3,12 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5003/api
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {
   try {
-    const token = localStorage.getItem('token') || localStorage.getItem('adminToken');
+    // Use adminToken for admin endpoints, regular token otherwise
+    const isAdminEndpoint = endpoint.startsWith('/admin');
+    const token = isAdminEndpoint
+      ? localStorage.getItem('adminToken')
+      : localStorage.getItem('token');
+
     const headers = {
       'Content-Type': 'application/json',
       ...options.headers

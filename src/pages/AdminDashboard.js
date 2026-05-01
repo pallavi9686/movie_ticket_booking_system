@@ -53,19 +53,24 @@ const AdminDashboard = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const moviesData = await getAdminMovies();
+      const [moviesData, usersData, bookingsData, couponsData] = await Promise.all([
+        getAdminMovies(),
+        getAdminUsers(),
+        getAdminBookings(),
+        getAdminCoupons()
+      ]);
       setMovies(moviesData);
-      
-      const usersData = await getAdminUsers();
       setUsers(usersData);
-      
-      const bookingsData = await getAdminBookings();
       setBookings(bookingsData);
-      
-      const couponsData = await getAdminCoupons();
       setCoupons(couponsData);
     } catch (error) {
       console.error('Failed to load data:', error);
+      if (error.message === 'Invalid token') {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('currentAdmin');
+        navigate('/admin-login');
+        return;
+      }
       setMessage({ type: 'error', text: error.message });
     } finally {
       setLoading(false);

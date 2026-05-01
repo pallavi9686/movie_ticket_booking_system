@@ -15,13 +15,7 @@
   background: 
     radial-gradient(circle at 30% 40%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 70% 60%, rgba(255, 217, 61, 0.08) 0%, transparent 50%);
-  animation: float 25s ease-in-out infinite;
   z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(2deg); }
 }
 
 .admin-tabs {

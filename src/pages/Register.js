@@ -28,6 +28,16 @@ const Register = () => {
       return;
     }
 
+    if (formData.password === formData.email) {
+      setError('Password cannot be the same as your email address');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setLoading(true);
     try {
       await registerUser({
@@ -50,7 +60,10 @@ const Register = () => {
         <div className="auth-card">
           <h2>User Registration</h2>
           {error && <div className="error-message">{error}</div>}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
+            {/* Hidden fields to prevent browser autofill on real fields */}
+            <input type="text" style={{display:'none'}} />
+            <input type="password" style={{display:'none'}} />
             <div className="form-group">
               <label>Full Name</label>
               <input
@@ -59,6 +72,7 @@ const Register = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter your full name"
+                autoComplete="name"
                 required
               />
             </div>
@@ -70,6 +84,7 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
+                autoComplete="email"
                 required
               />
             </div>
@@ -81,6 +96,7 @@ const Register = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Enter your phone number"
+                autoComplete="tel"
               />
             </div>
             <div className="form-group">
@@ -90,7 +106,8 @@ const Register = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter your password"
+                placeholder="Enter your password (min 6 characters)"
+                autoComplete="new-password"
                 required
               />
             </div>
@@ -102,6 +119,7 @@ const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm your password"
+                autoComplete="new-password"
                 required
               />
             </div>

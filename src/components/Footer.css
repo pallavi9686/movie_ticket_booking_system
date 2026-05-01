@@ -21,13 +21,7 @@
   background: 
     radial-gradient(circle at 20% 50%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 80% 50%, rgba(255, 217, 61, 0.08) 0%, transparent 50%);
-  animation: float 20s ease-in-out infinite;
   z-index: 0;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
 }
 
 .footer-container {
@@ -40,18 +34,6 @@
   margin-bottom: 40px;
   position: relative;
   z-index: 1;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .footer-section h3 {
@@ -200,12 +182,6 @@
   color: rgba(255, 255, 255, 0.6);
   position: relative;
   z-index: 1;
-  animation: fadeIn 1s ease-out 0.5s both;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .footer-bottom p {
